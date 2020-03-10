@@ -29,7 +29,7 @@ public class FeatureService {
 	}
 
 	private FeatureEnv getFeatureEnv(String env) {
-		return restTemplate.getForObject(ENV.getBuildServiceAPI() + "/environment/" + env, FeatureEnv.class);
+		return restTemplate.getForObject(ENV.FEATURE_SERVICE_API() + "/environment/" + env, FeatureEnv.class);
 	}
 
 }

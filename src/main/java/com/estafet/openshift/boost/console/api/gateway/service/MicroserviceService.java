@@ -32,19 +32,19 @@ public class MicroserviceService {
 	}
 
 	private BuildEnv getBuildEnv() {
-		return restTemplate.getForObject(ENV.getBuildServiceAPI() + "/environment", BuildEnv.class);
+		return restTemplate.getForObject(ENV.BUILD_SERVICE_API() + "/environment", BuildEnv.class);
 	}
 
 	private TestEnv getTestEnv() {
-		return restTemplate.getForObject(ENV.getTestServiceAPI() + "/environment", TestEnv.class);
+		return restTemplate.getForObject(ENV.TEST_SERVICE_API() + "/environment", TestEnv.class);
 	}
 
 	private ProdEnv getBlueEnv() {
-		return restTemplate.getForObject(ENV.getProdServiceAPI() + "/environment/blue", ProdEnv.class);
+		return restTemplate.getForObject(ENV.PROD_SERVICE_API() + "/environment/blue", ProdEnv.class);
 	}
 
 	private ProdEnv getGreenEnv() {
-		return restTemplate.getForObject(ENV.getProdServiceAPI() + "/environment/green", ProdEnv.class);
+		return restTemplate.getForObject(ENV.PROD_SERVICE_API() + "/environment/green", ProdEnv.class);
 	}
 
 	public MicroserviceActionResponseDTO doAction(String env, String app, String action) {

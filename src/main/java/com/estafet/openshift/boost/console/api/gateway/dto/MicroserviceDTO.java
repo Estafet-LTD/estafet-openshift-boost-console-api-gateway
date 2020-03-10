@@ -1,5 +1,9 @@
 package com.estafet.openshift.boost.console.api.gateway.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class MicroserviceDTO {
 
 	private String version;
@@ -60,6 +64,12 @@ public class MicroserviceDTO {
 		private String deployedDate;
 		private boolean deployed;		
 		private Boolean promoteAction;
+		private Boolean buildAction;
+
+		public MicroserviceDTOBuilder setBuildAction(Boolean buildAction) {
+			this.buildAction = buildAction;
+			return this;
+		}
 
 		public MicroserviceDTOBuilder setPromoteAction(Boolean promoteAction) {
 			this.promoteAction = promoteAction;
@@ -94,8 +104,9 @@ public class MicroserviceDTO {
 			dto.setDeployedDate(deployedDate);
 			dto.setDeployed(deployed);
 			dto.setActions(actions);
-			if (promoteAction != null) {
+			if (promoteAction != null || buildAction != null) {
 				actions.setPromote(promoteAction);	
+				actions.setBuild(buildAction);	
 			}
 			return dto;
 		}

@@ -76,6 +76,7 @@ public class BuildApp {
 				.setDeployedDate(deployedDate)
 				.setName(name)
 				.setPromoteAction(canRelease)
+				.setBuildAction(true)
 				.setVersion(version)
 				.build();
 	}

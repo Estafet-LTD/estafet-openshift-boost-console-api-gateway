@@ -2,14 +2,27 @@ package com.estafet.openshift.boost.console.api.gateway.dto;
 
 public class MicroserviceActionsDTO {
 
-	private Boolean promote;
+	private boolean build;
+	private boolean promote;
 
-	public Boolean getPromote() {
+	public boolean getBuild() {
+		return build;
+	}
+
+	public void setBuild(Boolean build) {
+		if (build != null) {
+			this.build = build;	
+		}
+	}
+
+	public boolean getPromote() {
 		return promote;
 	}
 
 	public void setPromote(Boolean promote) {
-		this.promote = promote;
+		if (promote != null) {
+			this.promote = promote;	
+		}
 	}
 
 }

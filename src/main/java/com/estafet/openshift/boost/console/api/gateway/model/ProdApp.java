@@ -72,10 +72,16 @@ public class ProdApp {
 	@JsonIgnore
 	public MicroserviceDTO getMicroservice(boolean live) {
 		Boolean promoteAction = live ? null : !testStatus.equals("Untested");
+		String displayName = null;
+		if (name.startsWith("green")) {
+			displayName = name.substring("green".length());
+		} else if (name.startsWith("blue")) {
+			displayName = name.substring("blue".length());
+		} 
 		return MicroserviceDTO.builder()
 				.setDeployed(deployed)
 				.setDeployedDate(deployedDate)
-				.setName(name)
+				.setName(displayName)
 				.setPromoteAction(promoteAction)
 				.setVersion(version)
 				.build();

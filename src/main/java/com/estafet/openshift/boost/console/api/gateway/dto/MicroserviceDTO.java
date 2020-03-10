@@ -94,7 +94,9 @@ public class MicroserviceDTO {
 			dto.setDeployedDate(deployedDate);
 			dto.setDeployed(deployed);
 			dto.setActions(actions);
-			actions.setPromote(promoteAction);
+			if (promoteAction != null) {
+				actions.setPromote(promoteAction);	
+			}
 			return dto;
 		}
 

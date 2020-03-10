@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
 import com.estafet.openshift.boost.console.api.gateway.dto.MicroserviceActionResponseDTO;
 import com.estafet.openshift.boost.console.api.gateway.model.BuildEnv;
+import com.estafet.openshift.boost.console.api.gateway.model.PipelineStatus;
 import com.estafet.openshift.boost.console.api.gateway.model.ProdEnv;
 import com.estafet.openshift.boost.console.api.gateway.model.TestEnv;
 import com.estafet.openshift.boost.console.api.gateway.util.ENV;
@@ -48,8 +49,21 @@ public class MicroserviceService {
 	}
 
 	public MicroserviceActionResponseDTO doAction(String env, String app, String action) {
-		// TODO Auto-generated method stub
-		return null;
+		if (env.equals("build")) {
+			if (action.equals("build")) {
+				return restTemplate.postForObject(ENV.BUILD_SERVICE_API() + "/build/app/" + app, null, PipelineStatus.class)
+						.getMicroserviceActionResponseDTO(env, app);
+			} else if (action.equals("promote")) {
+				return restTemplate.postForObject(ENV.BUILD_SERVICE_API() + "/release/app/" + app, null, PipelineStatus.class)
+						.getMicroserviceActionResponseDTO(env, app);
+			} 
+		} else if (env.equals("test")) {
+			if (action.equals("promote")) {
+				return restTemplate.postForObject(ENV.TEST_SERVICE_API() + "/promote/app/" + app, null, PipelineStatus.class)
+						.getMicroserviceActionResponseDTO(env, app);
+			} 
+		} 
+		throw new RuntimeException("Unknown action " + action + " for environment " + env + " and microservice " + app);
 	}
 
 }

@@ -70,7 +70,7 @@ public class FeatureEnv {
 				.setBuildAction(name.equals("build"))
 				.setGoLiveAction(goLiveAction)
 				.setTestAction(!(live || name.equals("build")))
-				.setPromoteAction(!live)
+				.setPromoteAction(false)
 				.setDisplayName(displayName)
 				.setName(name)
 				.setUpdatedDate(updatedDate)

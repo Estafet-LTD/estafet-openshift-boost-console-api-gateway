@@ -69,7 +69,7 @@ public class ProdEnv {
 				.setBuildAction(false)
 				.setGoLiveAction(!live)
 				.setTestAction(live ? false : tested)
-				.setPromoteAction(live ? false : tested)
+				.setPromoteAction(false)
 				.setDisplayName(live ? "Live" : "Staging")
 				.setName(name)
 				.setUpdatedDate(updatedDate)

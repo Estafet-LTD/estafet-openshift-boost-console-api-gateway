@@ -84,7 +84,7 @@ public class ProdApp {
 				.setName(displayName)
 				.setPromoteAction(promoteAction)
 				.setVersion(version)
-				.setAppState(envState.appState(name))
+				.setAppState(envState.appState(displayName))
 				.build();
 	}
 

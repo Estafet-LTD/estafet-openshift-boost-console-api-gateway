@@ -20,4 +20,8 @@ public final class ENV {
 		return System.getenv("FEATURE_API_SERVICE_URI");
 	}
 	
+	public static final String JENKINS_SERVICE_API() {
+		return System.getenv("JENKINS_API_SERVICE_URI");
+	}
+	
 }

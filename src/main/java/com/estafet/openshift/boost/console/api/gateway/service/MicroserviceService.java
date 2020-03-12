@@ -1,7 +1,9 @@
 package com.estafet.openshift.boost.console.api.gateway.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
 import com.estafet.openshift.boost.console.api.gateway.dto.MicroserviceActionResponseDTO;
 import com.estafet.openshift.boost.console.api.gateway.model.BuildEnv;
+import com.estafet.openshift.boost.console.api.gateway.model.EnvState;
 import com.estafet.openshift.boost.console.api.gateway.model.PipelineStatus;
 import com.estafet.openshift.boost.console.api.gateway.model.ProdEnv;
 import com.estafet.openshift.boost.console.api.gateway.model.TestEnv;
@@ -22,6 +25,7 @@ public class MicroserviceService {
 	private RestTemplate restTemplate;
 
 	public List<EnvironmentDTO> getMicroserviceEnvironments() {
+		Map<String, EnvState> states = getStates();
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
 		response.add(getBuildEnv().getEnvironmentDTO());
 		response.add(getTestEnv().getEnvironmentDTO());
@@ -30,6 +34,15 @@ public class MicroserviceService {
 		response.add(!blue.isLive() ? blue.getEnvironmentDTO() : green.getEnvironmentDTO());
 		response.add(blue.isLive() ? blue.getEnvironmentDTO() : green.getEnvironmentDTO());
 		return response;
+	}
+	
+	private Map<String, EnvState> getStates() {
+		EnvState[] states = restTemplate.getForObject(ENV.JENKINS_SERVICE_API() + "/states", EnvState[].class);
+		Map<String, EnvState> map = new HashMap<String, EnvState>();
+		for (EnvState envState : states) {
+			map.put(envState.getName(), envState);
+		}
+		return map;
 	}
 
 	private BuildEnv getBuildEnv() {

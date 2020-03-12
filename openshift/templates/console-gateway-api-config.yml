@@ -78,6 +78,8 @@ objects:
                 value: 'http://console-prod-api.${NAMESPACE}.svc:8080'          
               - name: FEATURE_API_SERVICE_URI
                 value: 'http://console-feature-api.${NAMESPACE}.svc:8080'
+              - name: JENKINS_API_SERVICE_URI
+                value: 'http://console-jenkins-api.${NAMESPACE}.svc:8080'
               - name: PRODUCT
                 value: ${PRODUCT}
               - name: PRODUCT_DESCRIPTION

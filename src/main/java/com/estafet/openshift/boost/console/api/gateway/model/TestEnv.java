@@ -54,7 +54,7 @@ public class TestEnv {
 	}
 	
 	@JsonIgnore
-	public EnvironmentDTO getEnvironmentDTO() {
+	public EnvironmentDTO getEnvironmentDTO(EnvState envState) {
 		EnvironmentDTO dto = EnvironmentDTO.builder()
 				.setBackOutAction(false)
 				.setBuildAction(false)
@@ -63,6 +63,7 @@ public class TestEnv {
 				.setPromoteAction(tested)
 				.setDisplayName("Test")
 				.setName(name)
+				.setEnvState(envState)
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (TestApp testApp : testApps) {

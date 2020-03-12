@@ -3,6 +3,7 @@ package com.estafet.openshift.boost.console.api.gateway.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.estafet.openshift.boost.console.api.gateway.model.EnvState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -14,6 +15,7 @@ public class EnvironmentDTO {
 	private String updatedDate;
 	private Boolean tested;
 	private EnvironmentActionsDTO actions;
+	private EnvironmentStateDTO state;
 
 	private List<FeatureDTO> features;
 	private List<MicroserviceDTO> apps;
@@ -46,6 +48,14 @@ public class EnvironmentDTO {
 
 	public void setFeatures(List<FeatureDTO> features) {
 		this.features = features;
+	}
+
+	public EnvironmentStateDTO getState() {
+		return state;
+	}
+
+	public void setState(EnvironmentStateDTO state) {
+		this.state = state;
 	}
 
 	public EnvironmentActionsDTO getActions() {
@@ -87,7 +97,7 @@ public class EnvironmentDTO {
 	public void setTested(Boolean tested) {
 		this.tested = tested;
 	}
-	
+
 	public static EnvironmentDTOBuilder builder() {
 		return new EnvironmentDTOBuilder();
 	}
@@ -105,6 +115,13 @@ public class EnvironmentDTO {
 		private Boolean promoteAction;
 		private Boolean goLiveAction;
 		private Boolean backOutAction;
+
+		private EnvState envState;
+
+		public EnvironmentDTOBuilder setEnvState(EnvState envState) {
+			this.envState = envState;
+			return this;
+		}
 
 		public EnvironmentDTOBuilder setName(String name) {
 			this.name = name;
@@ -150,10 +167,14 @@ public class EnvironmentDTO {
 			this.backOutAction = backOutAction;
 			return this;
 		}
-		
+
 		public EnvironmentDTO build() {
 			EnvironmentDTO dto = new EnvironmentDTO();
 			EnvironmentActionsDTO actions = new EnvironmentActionsDTO();
+			EnvironmentStateDTO state = EnvironmentStateDTO.builder()
+					.setState(envState)
+					.build();
+			dto.setState(state);
 			dto.setUpdatedDate(updatedDate);
 			dto.setTested(tested);
 			dto.setName(name);

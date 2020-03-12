@@ -27,12 +27,14 @@ public class MicroserviceService {
 	public List<EnvironmentDTO> getMicroserviceEnvironments() {
 		Map<String, EnvState> states = getStates();
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
-		response.add(getBuildEnv().getEnvironmentDTO());
-		response.add(getTestEnv().getEnvironmentDTO());
+		response.add(getBuildEnv().getEnvironmentDTO(states.get("build")));
+		response.add(getTestEnv().getEnvironmentDTO(states.get("test")));
 		ProdEnv blue = getBlueEnv();
 		ProdEnv green = getGreenEnv();
-		response.add(!blue.isLive() ? blue.getEnvironmentDTO() : green.getEnvironmentDTO());
-		response.add(blue.isLive() ? blue.getEnvironmentDTO() : green.getEnvironmentDTO());
+		EnvState blueState = states.get("blue");
+		EnvState greenState = states.get("green");
+		response.add(!blue.isLive() ? blue.getEnvironmentDTO(blueState) : green.getEnvironmentDTO(greenState));
+		response.add(blue.isLive() ? blue.getEnvironmentDTO(blueState) : green.getEnvironmentDTO(greenState));
 		return response;
 	}
 	

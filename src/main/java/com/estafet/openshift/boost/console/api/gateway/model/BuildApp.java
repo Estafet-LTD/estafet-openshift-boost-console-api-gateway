@@ -70,15 +70,26 @@ public class BuildApp {
 	}
 	
 	@JsonIgnore
-	public MicroserviceDTO geMicroservice() {
+	public MicroserviceDTO getMicroservice(EnvState envState) {
+		AppState appState = envState.appState(name);
 		return MicroserviceDTO.builder()
 				.setDeployed(deployed)
 				.setDeployedDate(deployedDate)
 				.setName(name)
-				.setPromoteAction(canRelease)
+				.setPromoteAction(isComplete(appState.getBuild()))
 				.setBuildAction(true)
 				.setVersion(version)
+				.setAppState(appState)
 				.build();
+	}
+	
+	
+	private boolean isComplete(State state) {
+		if (state != null) {
+			return state == State.COMPLETE;
+		} else {
+			return false;
+		}
 	}
 
 }

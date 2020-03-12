@@ -37,7 +37,7 @@ public class BuildEnv {
 	}
 	
 	@JsonIgnore
-	public EnvironmentDTO getEnvironmentDTO() {
+	public EnvironmentDTO getEnvironmentDTO(EnvState envState) {
 		EnvironmentDTO dto = EnvironmentDTO.builder()
 				.setBackOutAction(false)
 				.setBuildAction(true)
@@ -45,11 +45,12 @@ public class BuildEnv {
 				.setTestAction(false)
 				.setPromoteAction(true)
 				.setDisplayName("Build")
+				.setEnvState(envState)
 				.setName(name)
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (BuildApp buildApp : buildApps) {
-			dto.addMicroservice(buildApp.geMicroservice());
+			dto.addMicroservice(buildApp.getMicroservice(envState));
 		}
 		return dto;
 	}

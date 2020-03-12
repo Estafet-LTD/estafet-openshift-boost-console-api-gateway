@@ -78,5 +78,14 @@ public class EnvState {
 	public void setApps(List<AppState> apps) {
 		this.apps = apps;
 	}
+	
+	public AppState appState(String name) {
+		for (AppState appState : apps) {
+			if (appState.getName().equals(name)) {
+				return appState;
+			}
+		}
+		throw new RuntimeException("Cannot find state for app - " + name);
+	}
 
 }

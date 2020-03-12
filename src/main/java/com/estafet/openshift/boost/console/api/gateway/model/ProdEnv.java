@@ -63,7 +63,7 @@ public class ProdEnv {
 	}
 
 	@JsonIgnore
-	public EnvironmentDTO getEnvironmentDTO() {
+	public EnvironmentDTO getEnvironmentDTO(EnvState envState) {
 		EnvironmentDTO dto = EnvironmentDTO.builder()
 				.setBackOutAction(live)
 				.setBuildAction(false)
@@ -72,6 +72,7 @@ public class ProdEnv {
 				.setPromoteAction(false)
 				.setDisplayName(live ? "Live" : "Staging")
 				.setName(name)
+				.setEnvState(envState)
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (ProdApp prodApp : prodApps) {

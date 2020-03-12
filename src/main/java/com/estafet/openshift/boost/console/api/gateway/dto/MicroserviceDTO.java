@@ -115,9 +115,7 @@ public class MicroserviceDTO {
 		public MicroserviceDTO build() {
 			MicroserviceDTO dto = new MicroserviceDTO();
 			MicroserviceActionsDTO actions = new MicroserviceActionsDTO();
-			MicroserviceStateDTO state = MicroserviceStateDTO.builder()
-					.setState(appState)
-					.build();
+			MicroserviceStateDTO state = MicroserviceStateDTO.builder().setState(appState).build();
 			dto.setState(state);
 			dto.setVersion(version);
 			dto.setName(name);

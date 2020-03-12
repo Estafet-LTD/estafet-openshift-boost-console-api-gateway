@@ -70,13 +70,14 @@ public class TestApp {
 	}
 
 	@JsonIgnore
-	public MicroserviceDTO geMicroservice() {
+	public MicroserviceDTO getMicroservice(EnvState envState) {
 		return MicroserviceDTO.builder()
 				.setDeployed(deployed)
 				.setDeployedDate(deployedDate)
 				.setName(name)
 				.setPromoteAction(!testStatus.equals("Untested"))
 				.setVersion(version)
+				.setAppState(envState.appState(name))
 				.build();
 	}
 

@@ -76,7 +76,7 @@ public class ProdEnv {
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (ProdApp prodApp : prodApps) {
-			dto.addMicroservice(prodApp.getMicroservice(live));
+			dto.addMicroservice(prodApp.getMicroservice(live, envState));
 		}
 		return dto;
 	}

@@ -17,26 +17,26 @@ public class EnvironmentService {
 	public EnvironmentActionResponseDTO doAction(String env, String action) {
 		if (env.equals("build")) {
 			if (action.equals("build")) {
-				return restTemplate.postForObject(ENV.BUILD_SERVICE_API() + "/build/apps", null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.BUILD_SERVICE_API + "/build/apps", null, PipelineStatus.class)
 						.getEnvironmentActionResponseDTO(env);
 			} else if (action.equals("promote")) {
-				return restTemplate.postForObject(ENV.BUILD_SERVICE_API() + "/release/apps", null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.BUILD_SERVICE_API + "/release/apps", null, PipelineStatus.class)
 						.getEnvironmentActionResponseDTO(env);
 			} 
 		} else if (env.equals("test")) {
 			if (action.equals("test")) {
-				return restTemplate.postForObject(ENV.TEST_SERVICE_API() + "/tests", null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.TEST_SERVICE_API + "/tests", null, PipelineStatus.class)
 						.getEnvironmentActionResponseDTO(env);
 			} else if (action.equals("promote")) {
-				return restTemplate.postForObject(ENV.TEST_SERVICE_API() + "/promote/apps", null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.TEST_SERVICE_API + "/promote/apps", null, PipelineStatus.class)
 						.getEnvironmentActionResponseDTO(env);
 			} 
 		} else if (env.equals("blue") || env.equals("green")) {
 			if (action.equals("test")) {
-				return restTemplate.postForObject(ENV.PROD_SERVICE_API() + "/tests", null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.PROD_SERVICE_API + "/tests", null, PipelineStatus.class)
 						.getEnvironmentActionResponseDTO(env);
 			} else if (action.equals("go-live") || action.equals("back-out")) {
-				return restTemplate.postForObject(ENV.PROD_SERVICE_API() + "/promoteToLive", null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.PROD_SERVICE_API + "/promoteToLive", null, PipelineStatus.class)
 						.getEnvironmentActionResponseDTO(env);
 			}
 		}

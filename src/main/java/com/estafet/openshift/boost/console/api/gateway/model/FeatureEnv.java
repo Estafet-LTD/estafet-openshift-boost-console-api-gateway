@@ -51,7 +51,7 @@ public class FeatureEnv {
 		this.features = features;
 	}
 
-	public EnvironmentDTO getEnvironmentDTO() {
+	public EnvironmentDTO getEnvironmentDTO(EnvState envState) {
 		
 		String displayName;
 		boolean backOutAction = false;
@@ -71,6 +71,7 @@ public class FeatureEnv {
 				.setGoLiveAction(goLiveAction)
 				.setTestAction(!(live || name.equals("build")))
 				.setPromoteAction(false)
+				.setEnvState(envState)
 				.setDisplayName(displayName)
 				.setName(name)
 				.setUpdatedDate(updatedDate)

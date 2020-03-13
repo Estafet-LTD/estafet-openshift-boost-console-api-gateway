@@ -1,7 +1,6 @@
 package com.estafet.openshift.boost.console.api.gateway.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,60 +20,55 @@ import com.estafet.openshift.boost.console.api.gateway.util.ENV;
 @Service
 public class MicroserviceService {
 
+	@Autowired RestTemplate restTemplate;
+	
 	@Autowired
-	private RestTemplate restTemplate;
+	private StateService stateService;
 
 	public List<EnvironmentDTO> getMicroserviceEnvironments() {
-		Map<String, EnvState> states = getStates();
+		Map<String, EnvState> states = stateService.getStates();
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
-		response.add(getBuildEnv().getEnvironmentDTO(states.get("build")));
-		response.add(getTestEnv().getEnvironmentDTO(states.get("test")));
+		EnvironmentDTO buildEnvironmentDTO = getBuildEnv().getEnvironmentDTO(states.get("build"));
+		EnvironmentDTO testEnvironmentDTO = getTestEnv().getEnvironmentDTO(states.get("test"));
+		response.add(buildEnvironmentDTO);
+		response.add(testEnvironmentDTO);
 		ProdEnv blue = getBlueEnv();
 		ProdEnv green = getGreenEnv();
-		EnvState blueState = states.get("blue");
-		EnvState greenState = states.get("green");
-		response.add(!blue.isLive() ? blue.getEnvironmentDTO(blueState) : green.getEnvironmentDTO(greenState));
-		response.add(blue.isLive() ? blue.getEnvironmentDTO(blueState) : green.getEnvironmentDTO(greenState));
+		EnvironmentDTO blueEnvironmentDTO = blue.getEnvironmentDTO(states.get("blue"));
+		EnvironmentDTO greenEnvironmentDTO = green.getEnvironmentDTO(states.get("green"));
+		response.add(!blue.isLive() ? blueEnvironmentDTO : greenEnvironmentDTO);
+		response.add(blue.isLive() ? blueEnvironmentDTO : greenEnvironmentDTO);
 		return response;
 	}
 	
-	private Map<String, EnvState> getStates() {
-		EnvState[] states = restTemplate.getForObject(ENV.JENKINS_SERVICE_API() + "/states", EnvState[].class);
-		Map<String, EnvState> map = new HashMap<String, EnvState>();
-		for (EnvState envState : states) {
-			map.put(envState.getName(), envState);
-		}
-		return map;
-	}
-
 	private BuildEnv getBuildEnv() {
-		return restTemplate.getForObject(ENV.BUILD_SERVICE_API() + "/environment", BuildEnv.class);
+		return restTemplate.getForObject(ENV.BUILD_SERVICE_API + "/environment", BuildEnv.class);
 	}
 
 	private TestEnv getTestEnv() {
-		return restTemplate.getForObject(ENV.TEST_SERVICE_API() + "/environment", TestEnv.class);
+		return restTemplate.getForObject(ENV.TEST_SERVICE_API + "/environment", TestEnv.class);
 	}
 
 	private ProdEnv getBlueEnv() {
-		return restTemplate.getForObject(ENV.PROD_SERVICE_API() + "/environment/blue", ProdEnv.class);
+		return restTemplate.getForObject(ENV.PROD_SERVICE_API + "/environment/blue", ProdEnv.class);
 	}
 
 	private ProdEnv getGreenEnv() {
-		return restTemplate.getForObject(ENV.PROD_SERVICE_API() + "/environment/green", ProdEnv.class);
+		return restTemplate.getForObject(ENV.PROD_SERVICE_API + "/environment/green", ProdEnv.class);
 	}
 
 	public MicroserviceActionResponseDTO doAction(String env, String app, String action) {
 		if (env.equals("build")) {
 			if (action.equals("build")) {
-				return restTemplate.postForObject(ENV.BUILD_SERVICE_API() + "/build/app/" + app, null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.BUILD_SERVICE_API + "/build/app/" + app, null, PipelineStatus.class)
 						.getMicroserviceActionResponseDTO(env, app);
 			} else if (action.equals("promote")) {
-				return restTemplate.postForObject(ENV.BUILD_SERVICE_API() + "/release/app/" + app, null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.BUILD_SERVICE_API + "/release/app/" + app, null, PipelineStatus.class)
 						.getMicroserviceActionResponseDTO(env, app);
 			} 
 		} else if (env.equals("test")) {
 			if (action.equals("promote")) {
-				return restTemplate.postForObject(ENV.TEST_SERVICE_API() + "/promote/app/" + app, null, PipelineStatus.class)
+				return restTemplate.postForObject(ENV.TEST_SERVICE_API + "/promote/app/" + app, null, PipelineStatus.class)
 						.getMicroserviceActionResponseDTO(env, app);
 			} 
 		} 

@@ -38,10 +38,10 @@ public class EnvironmentService {
 			} 
 		} else if (env.equals("blue") || env.equals("green")) {
 			if (action.equals("test")) {
-				return restTemplate.postForObject(ENV.PROD_SERVICE_API + "/tests", null, ProdEnv.class)
+				return restTemplate.postForObject(ENV.PROD_SERVICE_API + "/tests/" + env, null, ProdEnv.class)
 						.getEnvironmentDTO(stateService.getState(env));
 			} else if (action.equals("go-live") || action.equals("back-out")) {
-				return restTemplate.postForObject(ENV.PROD_SERVICE_API + "/promoteToLive", null, ProdEnv.class)
+				return restTemplate.postForObject(ENV.PROD_SERVICE_API + "/promoteToLive/" + env, null, ProdEnv.class)
 						.getEnvironmentDTO(stateService.getState(env));
 			}
 		}

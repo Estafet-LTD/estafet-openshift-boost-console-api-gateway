@@ -66,7 +66,7 @@ public class MicroserviceDTO {
 	public static MicroserviceDTOBuilder builder() {
 		return new MicroserviceDTOBuilder();
 	}
-
+	
 	public static class MicroserviceDTOBuilder {
 
 		private String version;

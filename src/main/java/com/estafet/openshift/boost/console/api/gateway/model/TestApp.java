@@ -70,7 +70,7 @@ public class TestApp {
 	}
 
 	@JsonIgnore
-	public MicroserviceDTO getMicroservice(EnvState envState) {
+	public MicroserviceDTO getMicroserviceDTO(EnvState envState) {
 		return MicroserviceDTO.builder()
 				.setDeployed(deployed)
 				.setDeployedDate(deployedDate)

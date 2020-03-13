@@ -97,7 +97,7 @@ public class EnvironmentDTO {
 	public void setTested(Boolean tested) {
 		this.tested = tested;
 	}
-
+	
 	public static EnvironmentDTOBuilder builder() {
 		return new EnvironmentDTOBuilder();
 	}
@@ -171,9 +171,7 @@ public class EnvironmentDTO {
 		public EnvironmentDTO build() {
 			EnvironmentDTO dto = new EnvironmentDTO();
 			EnvironmentActionsDTO actions = new EnvironmentActionsDTO();
-			EnvironmentStateDTO state = EnvironmentStateDTO.builder()
-					.setState(envState)
-					.build();
+			EnvironmentStateDTO state = EnvironmentStateDTO.builder().setState(envState).build();
 			dto.setState(state);
 			dto.setUpdatedDate(updatedDate);
 			dto.setTested(tested);

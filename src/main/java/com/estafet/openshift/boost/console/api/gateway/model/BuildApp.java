@@ -70,7 +70,7 @@ public class BuildApp {
 	}
 	
 	@JsonIgnore
-	public MicroserviceDTO getMicroservice(EnvState envState) {
+	public MicroserviceDTO getMicroserviceDTO(EnvState envState) {
 		AppState appState = envState.appState(name);
 		return MicroserviceDTO.builder()
 				.setDeployed(deployed)

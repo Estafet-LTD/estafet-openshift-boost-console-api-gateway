@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentActionResponseDTO;
+import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
 import com.estafet.openshift.boost.console.api.gateway.service.EnvironmentService;
 
 @RestController
@@ -17,9 +17,9 @@ public class EnvironmentController {
 	private EnvironmentService environmentService;
 
 	@PostMapping("/environment/{env}/{action}")
-	public ResponseEntity<EnvironmentActionResponseDTO> doAction(@PathVariable String env,
+	public ResponseEntity<EnvironmentDTO> doAction(@PathVariable String env,
 			@PathVariable String action) {
-		return new ResponseEntity<EnvironmentActionResponseDTO>(environmentService.doAction(env, action),
+		return new ResponseEntity<EnvironmentDTO>(environmentService.doAction(env, action),
 				HttpStatus.OK);
 	}
 

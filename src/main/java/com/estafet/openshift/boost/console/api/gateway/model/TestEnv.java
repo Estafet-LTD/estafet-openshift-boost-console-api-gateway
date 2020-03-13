@@ -67,7 +67,7 @@ public class TestEnv {
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (TestApp testApp : testApps) {
-			dto.addMicroservice(testApp.getMicroservice(envState));
+			dto.addMicroservice(testApp.getMicroserviceDTO(envState));
 		}
 		return dto;
 	}

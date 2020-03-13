@@ -50,7 +50,7 @@ public class BuildEnv {
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (BuildApp buildApp : buildApps) {
-			dto.addMicroservice(buildApp.getMicroservice(envState));
+			dto.addMicroservice(buildApp.getMicroserviceDTO(envState));
 		}
 		return dto;
 	}

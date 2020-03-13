@@ -77,7 +77,7 @@ public class EnvironmentStateDTO {
 		
 		private boolean isRunning(State state) {
 			if (state != null) {
-				return state == State.RUNNING;
+				return state == State.RUNNING || state == State.NEW;
 			} else {
 				return false;
 			}

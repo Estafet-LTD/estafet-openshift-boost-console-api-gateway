@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.estafet.openshift.boost.console.api.gateway.model.EnvState;
 import com.estafet.openshift.boost.console.api.gateway.util.ENV;
 
+@Service
 public class StateService {
 
 	@Autowired

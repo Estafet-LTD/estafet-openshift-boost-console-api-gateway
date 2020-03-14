@@ -46,7 +46,7 @@ public class MicroserviceStateDTO {
 		
 		private boolean isRunning(State state) {
 			if (state != null) {
-				return state == State.RUNNING || state == State.NEW;
+				return state == State.RUNNING || state == State.NEW || state == State.PENDING;
 			} else {
 				return false;
 			}

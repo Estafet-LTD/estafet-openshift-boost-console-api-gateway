@@ -15,6 +15,16 @@ public class Feature {
 	private boolean promoted;
 
 	private String waitingSince;
+	
+	private String url;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public String getFeatureId() {
 		return featureId;
@@ -72,7 +82,7 @@ public class Feature {
 				.setStatus(status)
 				.setTitle(title)
 				.setWaitingSince(waitingSince)
-				.setUrl("http://trello.com")
+				.setUrl(url)
 				.build();
 	}
 

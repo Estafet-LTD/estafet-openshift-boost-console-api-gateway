@@ -69,10 +69,11 @@ public class FeatureEnv {
 				.setBackOutAction(backOutAction)
 				.setBuildAction(name.equals("build"))
 				.setGoLiveAction(goLiveAction)
-				.setTestAction(testAction(envState))
+				.setTestAction(testAction())
 				.setPromoteAction(promoteAction(envState))
 				.setEnvState(envState)
 				.setDisplayName(displayName)
+				.setIndicatorColour(indicatorColour())
 				.setName(name)
 				.setTested(tested(envState))
 				.setUpdatedDate(updatedDate)
@@ -85,26 +86,34 @@ public class FeatureEnv {
 		return dto;
 	}
 	
+	private String indicatorColour() {
+		if (name.equals("green") || name.equals("blue")) {
+			return name;
+		} else {
+			return null;
+		}
+	}
+	
 	private Boolean tested(EnvState envState) {
-		if (envState.getName().equals("test")) {
+		if (name.equals("test")) {
 			return envState.getTest() == State.COMPLETE;
-		} else if ((envState.getName().equals("green") || envState.getName().equals("blue")) && !live) {
+		} else if ((name.equals("green") || name.equals("blue")) && !live) {
 			return envState.getTest() == State.COMPLETE;
 		} 
 		return null;
 	}
 	
-	private boolean testAction(EnvState envState) {
-		if (envState.getName().equals("build")) {
+	private boolean testAction() {
+		if (name.equals("build")) {
 			return false;
-		} else if (envState.getName().equals("test")) {
+		} else if (name.equals("test")) {
 			return true;
-		} else if ((envState.getName().equals("green") || envState.getName().equals("blue")) && !live) {
+		} else if ((name.equals("green") || name.equals("blue")) && !live) {
 			return true;
-		}  else if (envState.getName().equals("green") || envState.getName().equals("blue")) {
+		}  else if (name.equals("green") || name.equals("blue")) {
 			return false;
 		} else {
-			throw new RuntimeException("Unknown environment - " + envState.getName());
+			throw new RuntimeException("Unknown environment - " + name);
 		}
 	}
 	

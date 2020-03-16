@@ -14,6 +14,8 @@ public class EnvironmentDTO {
 	private String displayName;
 	private String updatedDate;
 	private Boolean tested;
+	private String indicatorColour;
+	
 	private EnvironmentActionsDTO actions;
 	private EnvironmentStateDTO state;
 
@@ -32,6 +34,14 @@ public class EnvironmentDTO {
 			apps = new ArrayList<MicroserviceDTO>();
 		}
 		apps.add(microservice);
+	}
+
+	public String getIndicatorColour() {
+		return indicatorColour;
+	}
+
+	public void setIndicatorColour(String indicatorColour) {
+		this.indicatorColour = indicatorColour;
 	}
 
 	public List<MicroserviceDTO> getApps() {
@@ -108,6 +118,7 @@ public class EnvironmentDTO {
 		private String displayName;
 		private String updatedDate;
 		private Boolean tested;
+		private String indicatorColour;
 
 		private Boolean buildAction;
 		private Boolean testAction;
@@ -117,6 +128,11 @@ public class EnvironmentDTO {
 		private Boolean backOutAction;
 
 		private EnvState envState;
+
+		public EnvironmentDTOBuilder setIndicatorColour(String indicatorColour) {
+			this.indicatorColour = indicatorColour;
+			return this;
+		}
 
 		public EnvironmentDTOBuilder setEnvState(EnvState envState) {
 			this.envState = envState;
@@ -178,6 +194,7 @@ public class EnvironmentDTO {
 			dto.setName(name);
 			dto.setDisplayName(displayName);
 			dto.setActions(actions);
+			dto.setIndicatorColour(indicatorColour);
 			actions.setBackOut(backOutAction);
 			actions.setBuild(buildAction);
 			actions.setGoLive(goLiveAction);

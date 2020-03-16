@@ -74,6 +74,7 @@ public class ProdEnv {
 				.setName(name)
 				.setEnvState(envState)
 				.setTested(live ? null : tested)
+				.setIndicatorColour(name)
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (ProdApp prodApp : prodApps) {

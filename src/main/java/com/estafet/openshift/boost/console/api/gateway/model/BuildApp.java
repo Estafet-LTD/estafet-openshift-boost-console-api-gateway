@@ -76,20 +76,12 @@ public class BuildApp {
 				.setDeployed(deployed)
 				.setDeployedDate(deployedDate)
 				.setName(name)
-				.setPromoteAction(isComplete(appState.getBuild()))
+				.setPromoteAction(true)
 				.setBuildAction(true)
 				.setVersion(version)
+				.setTested(appState.getBuild() != State.FAILED)
 				.setAppState(appState)
 				.build();
-	}
-	
-	
-	private boolean isComplete(State state) {
-		if (state != null) {
-			return state == State.COMPLETE;
-		} else {
-			return false;
-		}
 	}
 
 }

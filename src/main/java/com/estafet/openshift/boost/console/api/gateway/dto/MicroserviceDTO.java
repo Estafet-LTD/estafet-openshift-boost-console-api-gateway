@@ -11,10 +11,19 @@ public class MicroserviceDTO {
 	private String name;
 	private String deployedDate;
 	private boolean deployed;
+	private Boolean tested;
 
 	private MicroserviceActionsDTO actions;
 	private MicroserviceStateDTO state;
 	
+	public Boolean getTested() {
+		return tested;
+	}
+
+	public void setTested(Boolean tested) {
+		this.tested = tested;
+	}
+
 	public MicroserviceStateDTO getState() {
 		return state;
 	}
@@ -76,6 +85,12 @@ public class MicroserviceDTO {
 		private Boolean promoteAction;
 		private Boolean buildAction;
 		private AppState appState;
+		private Boolean tested;
+
+		public MicroserviceDTOBuilder setTested(Boolean tested) {
+			this.tested = tested;
+			return this;
+		}
 
 		public MicroserviceDTOBuilder setAppState(AppState appState) {
 			this.appState = appState;
@@ -122,6 +137,7 @@ public class MicroserviceDTO {
 			dto.setDeployedDate(deployedDate);
 			dto.setDeployed(deployed);
 			dto.setActions(actions);
+			dto.setTested(tested);
 			if (promoteAction != null || buildAction != null) {
 				actions.setPromote(promoteAction);	
 				actions.setBuild(buildAction);	

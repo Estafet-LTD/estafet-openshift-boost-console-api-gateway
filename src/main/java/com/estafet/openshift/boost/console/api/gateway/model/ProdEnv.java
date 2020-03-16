@@ -68,11 +68,12 @@ public class ProdEnv {
 				.setBackOutAction(live)
 				.setBuildAction(false)
 				.setGoLiveAction(!live)
-				.setTestAction(live ? false : tested)
+				.setTestAction(!live)
 				.setPromoteAction(false)
 				.setDisplayName(live ? "Live" : "Staging")
 				.setName(name)
 				.setEnvState(envState)
+				.setTested(live ? null : tested)
 				.setUpdatedDate(updatedDate)
 				.build();
 		for (ProdApp prodApp : prodApps) {

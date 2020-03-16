@@ -75,7 +75,7 @@ public class TestApp {
 				.setDeployed(deployed)
 				.setDeployedDate(deployedDate)
 				.setName(name)
-				.setPromoteAction(!testStatus.equals("Untested"))
+				.setPromoteAction(envState.getTest() == State.COMPLETE)
 				.setVersion(version)
 				.setAppState(envState.appState(name))
 				.build();

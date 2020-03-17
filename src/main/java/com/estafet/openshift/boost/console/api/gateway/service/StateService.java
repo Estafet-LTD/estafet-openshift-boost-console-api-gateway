@@ -26,7 +26,7 @@ public class StateService {
 	}
 	
 	public EnvState getState(String env) {
-		return restTemplate.getForObject(ENV.JENKINS_SERVICE_API + "/states/" + env, EnvState.class);
+		return restTemplate.getForObject(ENV.JENKINS_SERVICE_API + "/state/" + env, EnvState.class);
 	}
 	
 }

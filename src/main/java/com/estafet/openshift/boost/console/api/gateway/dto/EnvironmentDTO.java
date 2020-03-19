@@ -19,20 +19,14 @@ public class EnvironmentDTO {
 	private EnvironmentActionsDTO actions;
 	private EnvironmentStateDTO state;
 
-	private List<FeatureDTO> features;
-	private List<MicroserviceDTO> apps;
+	private List<FeatureDTO> features = new ArrayList<FeatureDTO>();
+	private List<MicroserviceDTO> apps = new ArrayList<MicroserviceDTO>();
 
 	public void addFeature(FeatureDTO feature) {
-		if (features == null) {
-			features = new ArrayList<FeatureDTO>();
-		}
 		features.add(feature);
 	}
 
 	public void addMicroservice(MicroserviceDTO microservice) {
-		if (apps == null) {
-			apps = new ArrayList<MicroserviceDTO>();
-		}
 		apps.add(microservice);
 	}
 

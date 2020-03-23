@@ -25,21 +25,14 @@ public class FeatureService {
 	public List<EnvironmentDTO> getFeatureEnvironments() {
 		Map<String, EnvState> states = stateService.getStates();
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
-		EnvironmentDTO buildEnvironmentDTO = getFeatureEnv("build").getEnvironmentDTO(states.get("build"));
-		EnvironmentDTO testEnvironmentDTO = getFeatureEnv("test").getEnvironmentDTO(states.get("test"));
-		FeatureEnv blue = getFeatureEnv("blue");
-		FeatureEnv green = getFeatureEnv("green");
-		EnvironmentDTO blueEnvironmentDTO = blue.getEnvironmentDTO(states.get("blue"));
-		EnvironmentDTO greenEnvironmentDTO = green.getEnvironmentDTO(states.get("green"));
-		response.add(buildEnvironmentDTO);
-		response.add(testEnvironmentDTO);
-		response.add(!blue.isLive() ? blueEnvironmentDTO : greenEnvironmentDTO);
-		response.add(blue.isLive() ? blueEnvironmentDTO : greenEnvironmentDTO);
+		for (FeatureEnv featureEnv : getFeatureEnvs()) {
+			response.add(featureEnv.getEnvironmentDTO(states.get(featureEnv.getName())));
+		}
 		return response;
 	}
 
-	private FeatureEnv getFeatureEnv(String env) {
-		return restTemplate.getForObject(ENV.FEATURE_SERVICE_API + "/environment/" + env, FeatureEnv.class);
+	private FeatureEnv[] getFeatureEnvs() {
+		return restTemplate.getForObject(ENV.FEATURE_SERVICE_API + "/environments", FeatureEnv[].class);
 	}
 
 }

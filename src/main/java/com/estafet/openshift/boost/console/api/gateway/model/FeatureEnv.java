@@ -8,10 +8,9 @@ import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
 public class FeatureEnv {
 
 	private String name;
-
 	private String updatedDate;
-
-	private boolean live;
+	private Boolean live;
+	private Boolean tested;
 	
 	private List<Feature> features = new ArrayList<Feature>();
 
@@ -35,11 +34,19 @@ public class FeatureEnv {
 		this.updatedDate = updatedDate;
 	}
 
-	public boolean isLive() {
+	public Boolean getTested() {
+		return tested;
+	}
+
+	public void setTested(Boolean tested) {
+		this.tested = tested;
+	}
+
+	public Boolean getLive() {
 		return live;
 	}
 
-	public void setLive(boolean live) {
+	public void setLive(Boolean live) {
 		this.live = live;
 	}
 
@@ -75,7 +82,7 @@ public class FeatureEnv {
 				.setDisplayName(displayName)
 				.setIndicatorColour(indicatorColour())
 				.setName(name)
-				.setTested(tested(envState))
+				.setTested(tested)
 				.setUpdatedDate(updatedDate)
 				.build();
 		
@@ -93,16 +100,7 @@ public class FeatureEnv {
 			return null;
 		}
 	}
-	
-	private Boolean tested(EnvState envState) {
-		if (name.equals("test")) {
-			return envState.getTest() == State.COMPLETE;
-		} else if ((name.equals("green") || name.equals("blue")) && !live) {
-			return envState.getTest() == State.COMPLETE;
-		} 
-		return null;
-	}
-	
+		
 	private boolean testAction() {
 		if (name.equals("build")) {
 			return false;

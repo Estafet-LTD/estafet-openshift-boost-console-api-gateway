@@ -1,5 +1,9 @@
 package com.estafet.openshift.boost.console.api.gateway.service;
 
+import java.util.Map;
+
+import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
+import com.estafet.openshift.boost.console.api.gateway.model.EnvState;
 import com.estafet.openshift.boost.messages.environments.Environment;
 
 public class BaseService {
@@ -48,6 +52,21 @@ public class BaseService {
 		} else {
 			return "black";
 		}
+	}
+
+	protected EnvironmentDTO convertToDTO(Map<String, EnvState> states, Environment environment) {
+		return EnvironmentDTO.builder()
+				.setName(environment.getName())
+				.setEnvState(states.get(environment.getName()))
+				.setDisplayName(environment.getDisplayName())
+				.setIndicatorColour(indicatorColour(environment))
+				.setBackOutAction(backOutAction(environment))
+				.setGoLiveAction(goLiveAction(environment))
+				.setBuildAction(buildAction(environment))
+				.setPromoteAction(promoteAction(environment))
+				.setTestAction(testAction(environment))
+				.setUpdatedDate(environment.getUpdatedDate())
+				.build();
 	}
 
 }

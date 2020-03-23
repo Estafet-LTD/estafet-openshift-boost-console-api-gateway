@@ -29,37 +29,16 @@ public class MicroserviceService extends BaseService {
 		Map<String, EnvState> states = stateService.getStates();
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
 		for (Environment environment : getEnvs()) {
-			EnvironmentDTO env = EnvironmentDTO.builder()
-					.setName(environment.getName())
-					.setEnvState(states.get(environment.getName()))
-					.setDisplayName(environment.getDisplayName())
-					.setIndicatorColour(indicatorColour(environment))
-					.setBackOutAction(backOutAction(environment))
-					.setGoLiveAction(goLiveAction(environment))
-					.setBuildAction(buildAction(environment))
-					.setPromoteAction(promoteAction(environment))
-					.setTestAction(testAction(environment))
-					.setUpdatedDate(environment.getUpdatedDate())
-					.build();
+			EnvironmentDTO env = convertToDTO(states, environment);
 			for (EnvironmentApp app : environment.getApps()) {
 				AppState appState = states.get(environment.getName()).appState(app.getName());
-				MicroserviceDTO ms = MicroserviceDTO.builder()
-						.setAppState(appState)
-						.setBuildAction(msBuildAction(environment))
-						.setDeployed(app.isDeployed())
-						.setDeployedDate(app.getDeployedDate())
-						.setName(app.getName())
-						.setPromoteAction(msPromoteAction(environment, app, appState))
-						.setTested(msTested(environment, app, appState))
-						.setVersion(app.getVersion())
-						.build(); 
-				env.addMicroservice(ms);
+				env.addMicroservice(convertToDTO(environment, appState, app));
 			}
 			response.add(env);
 		}
 		return response;
 	}
-	
+
 	private Boolean msTested(Environment env, EnvironmentApp app, AppState appState) {
 		if (env.getName().equals("build")) {
 			return appState.getBuild() != State.FAILED;
@@ -92,6 +71,10 @@ public class MicroserviceService extends BaseService {
 				null, Environment.class);
 		AppState appState = stateService.getState(env).appState(app);
 		EnvironmentApp environmentApp = environment.getEnvironmentApp(app);
+		return convertToDTO(environment, appState, environmentApp);
+	}
+
+	private MicroserviceDTO convertToDTO(Environment environment, AppState appState, EnvironmentApp environmentApp) {
 		return MicroserviceDTO.builder()
 				.setAppState(appState)
 				.setBuildAction(msBuildAction(environment))

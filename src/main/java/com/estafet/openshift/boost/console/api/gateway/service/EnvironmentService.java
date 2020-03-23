@@ -20,23 +20,11 @@ public class EnvironmentService extends BaseService {
 	@Autowired
 	private StateService stateService;
 
-	// /environment/{env}/{action}
 	public EnvironmentDTO doAction(String env, String action) {
 		Environment environment = restTemplate.postForObject(ENV.ENVIRONMENT_SERVICE_API + 
 				"/environment/"	+ env + "/" + action, null, Environment.class);
 		Map<String, EnvState> states = stateService.getStates();
-		return EnvironmentDTO.builder()
-			.setName(environment.getName())
-			.setEnvState(states.get(environment.getName()))
-			.setDisplayName(environment.getDisplayName())
-			.setIndicatorColour(indicatorColour(environment))
-			.setBackOutAction(backOutAction(environment))
-			.setGoLiveAction(goLiveAction(environment))
-			.setBuildAction(buildAction(environment))
-			.setPromoteAction(promoteAction(environment))
-			.setTestAction(testAction(environment))
-			.setUpdatedDate(environment.getUpdatedDate())
-			.build();
+		return convertToDTO(states, environment);
 	}
 
 }

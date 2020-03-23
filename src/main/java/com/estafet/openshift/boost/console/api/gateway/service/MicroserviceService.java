@@ -10,16 +10,15 @@ import org.springframework.web.client.RestTemplate;
 
 import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
 import com.estafet.openshift.boost.console.api.gateway.dto.MicroserviceDTO;
-import com.estafet.openshift.boost.console.api.gateway.model.BuildApp;
-import com.estafet.openshift.boost.console.api.gateway.model.BuildEnv;
+import com.estafet.openshift.boost.console.api.gateway.model.AppState;
 import com.estafet.openshift.boost.console.api.gateway.model.EnvState;
-import com.estafet.openshift.boost.console.api.gateway.model.ProdEnv;
-import com.estafet.openshift.boost.console.api.gateway.model.TestApp;
-import com.estafet.openshift.boost.console.api.gateway.model.TestEnv;
+import com.estafet.openshift.boost.console.api.gateway.model.State;
 import com.estafet.openshift.boost.console.api.gateway.util.ENV;
+import com.estafet.openshift.boost.messages.environments.Environment;
+import com.estafet.openshift.boost.messages.environments.EnvironmentApp;
 
 @Service
-public class MicroserviceService {
+public class MicroserviceService extends BaseService {
 
 	@Autowired RestTemplate restTemplate;
 	
@@ -29,51 +28,79 @@ public class MicroserviceService {
 	public List<EnvironmentDTO> getMicroserviceEnvironments() {
 		Map<String, EnvState> states = stateService.getStates();
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
-		EnvironmentDTO buildEnvironmentDTO = getBuildEnv().getEnvironmentDTO(states.get("build"));
-		EnvironmentDTO testEnvironmentDTO = getTestEnv().getEnvironmentDTO(states.get("test"));
-		response.add(buildEnvironmentDTO);
-		response.add(testEnvironmentDTO);
-		ProdEnv blue = getBlueEnv();
-		ProdEnv green = getGreenEnv();
-		EnvironmentDTO blueEnvironmentDTO = blue.getEnvironmentDTO(states.get("blue"));
-		EnvironmentDTO greenEnvironmentDTO = green.getEnvironmentDTO(states.get("green"));
-		response.add(!blue.isLive() ? blueEnvironmentDTO : greenEnvironmentDTO);
-		response.add(blue.isLive() ? blueEnvironmentDTO : greenEnvironmentDTO);
+		for (Environment environment : getEnvs()) {
+			EnvironmentDTO env = EnvironmentDTO.builder()
+					.setName(environment.getName())
+					.setEnvState(states.get(environment.getName()))
+					.setDisplayName(environment.getDisplayName())
+					.setIndicatorColour(indicatorColour(environment))
+					.setBackOutAction(backOutAction(environment))
+					.setGoLiveAction(goLiveAction(environment))
+					.setBuildAction(buildAction(environment))
+					.setPromoteAction(promoteAction(environment))
+					.setTestAction(testAction(environment))
+					.setUpdatedDate(environment.getUpdatedDate())
+					.build();
+			for (EnvironmentApp app : environment.getApps()) {
+				AppState appState = states.get(environment.getName()).appState(app.getName());
+				MicroserviceDTO ms = MicroserviceDTO.builder()
+						.setAppState(appState)
+						.setBuildAction(msBuildAction(environment))
+						.setDeployed(app.isDeployed())
+						.setDeployedDate(app.getDeployedDate())
+						.setName(app.getName())
+						.setPromoteAction(msPromoteAction(environment, app, appState))
+						.setTested(msTested(environment, app, appState))
+						.setVersion(app.getVersion())
+						.build(); 
+				env.addMicroservice(ms);
+			}
+			response.add(env);
+		}
 		return response;
 	}
 	
-	private BuildEnv getBuildEnv() {
-		return restTemplate.getForObject(ENV.BUILD_SERVICE_API + "/environment", BuildEnv.class);
+	private Boolean msTested(Environment env, EnvironmentApp app, AppState appState) {
+		if (env.getName().equals("build")) {
+			return appState.getBuild() != State.FAILED;
+		} else {
+			return null;	
+		}
 	}
 
-	private TestEnv getTestEnv() {
-		return restTemplate.getForObject(ENV.TEST_SERVICE_API + "/environment", TestEnv.class);
+	private boolean msPromoteAction(Environment env, EnvironmentApp app, AppState appState) {
+		if (env.getName().equals("build")) {
+			return appState.getBuild() != State.FAILED;
+		} else if (env.getName().equals("green") || env.getName().equals("blue")) {
+			return false;
+		} else {
+			return env.getTested();
+		}
 	}
 
-	private ProdEnv getBlueEnv() {
-		return restTemplate.getForObject(ENV.PROD_SERVICE_API + "/environment/blue", ProdEnv.class);
+	private boolean msBuildAction(Environment env) {
+		return env.getName().equals("build");
 	}
-
-	private ProdEnv getGreenEnv() {
-		return restTemplate.getForObject(ENV.PROD_SERVICE_API + "/environment/green", ProdEnv.class);
+	
+	private Environment[] getEnvs() {
+		return restTemplate.getForObject(ENV.ENVIRONMENT_SERVICE_API + "/microservices", Environment[].class);
 	}
 
 	public MicroserviceDTO doAction(String env, String app, String action) {
-		if (env.equals("build")) {
-			if (action.equals("build")) {
-				return restTemplate.postForObject(ENV.BUILD_SERVICE_API + "/build/app/" + app, null, BuildApp.class)
-						.getMicroserviceDTO(stateService.getState(env));
-			} else if (action.equals("promote")) {
-				return restTemplate.postForObject(ENV.BUILD_SERVICE_API + "/release/app/" + app, null, BuildApp.class)
-						.getMicroserviceDTO(stateService.getState(env));
-			} 
-		} else if (env.equals("test")) {
-			if (action.equals("promote")) {
-				return restTemplate.postForObject(ENV.TEST_SERVICE_API + "/promote/app/" + app, null, TestApp.class)
-						.getMicroserviceDTO(stateService.getState(env));
-			} 
-		} 
-		throw new RuntimeException("Unknown action " + action + " for environment " + env + " and microservice " + app);
+		Environment environment = restTemplate.postForObject(ENV.ENVIRONMENT_SERVICE_API + 
+				"/environment/"	+ env + "/app/" + app +"/" + action, 
+				null, Environment.class);
+		AppState appState = stateService.getState(env).appState(app);
+		EnvironmentApp environmentApp = environment.getEnvironmentApp(app);
+		return MicroserviceDTO.builder()
+				.setAppState(appState)
+				.setBuildAction(msBuildAction(environment))
+				.setDeployed(environmentApp.isDeployed())
+				.setDeployedDate(environmentApp.getDeployedDate())
+				.setName(environmentApp.getName())
+				.setPromoteAction(msPromoteAction(environment, environmentApp, appState))
+				.setTested(msTested(environment, environmentApp, appState))
+				.setVersion(environmentApp.getVersion())
+				.build();
 	}
-
 }

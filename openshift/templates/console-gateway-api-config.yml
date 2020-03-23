@@ -70,12 +70,8 @@ objects:
       spec:
         containers:
           - env:
-              - name: BUILD_API_SERVICE_URI
-                value: 'http://console-build-api.${NAMESPACE}.svc:8080'
-              - name: TEST_API_SERVICE_URI
-                value: 'http://console-test-api.${NAMESPACE}.svc:8080'
-              - name: PROD_API_SERVICE_URI
-                value: 'http://console-prod-api.${NAMESPACE}.svc:8080'          
+              - name: ENVIRONMENT_API_SERVICE_URI
+                value: 'http://console-environment-api.${NAMESPACE}.svc:8080'          
               - name: FEATURE_API_SERVICE_URI
                 value: 'http://console-feature-api.${NAMESPACE}.svc:8080'
               - name: JENKINS_API_SERVICE_URI

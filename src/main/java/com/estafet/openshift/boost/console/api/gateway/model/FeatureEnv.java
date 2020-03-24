@@ -97,7 +97,7 @@ public class FeatureEnv {
 		if (name.equals("green") || name.equals("blue")) {
 			return name;
 		} else {
-			return null;
+			return "black";
 		}
 	}
 		
@@ -117,7 +117,7 @@ public class FeatureEnv {
 		} else if (name.equals("green") || name.equals("blue")) {
 			return false;
 		} else {
-			return tested;
+			return tested == null ? false : tested;
 		}
 	}
 	

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,6 +22,8 @@ import com.estafet.openshift.boost.messages.environments.EnvironmentApp;
 @Service
 public class MicroserviceService extends BaseService {
 
+	private static final Logger log = LoggerFactory.getLogger(MicroserviceService.class);
+	
 	@Autowired RestTemplate restTemplate;
 	
 	@Autowired
@@ -75,6 +79,9 @@ public class MicroserviceService extends BaseService {
 	}
 
 	private MicroserviceDTO convertToDTO(Environment environment, AppState appState, EnvironmentApp environmentApp) {
+		log.info(environment.toString());
+		log.info(appState.toString());
+		log.info(environmentApp.toString());
 		return MicroserviceDTO.builder()
 				.setAppState(appState)
 				.setBuildAction(msBuildAction(environment))

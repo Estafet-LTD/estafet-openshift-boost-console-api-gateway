@@ -35,5 +35,10 @@ public class AppState {
 	public void setPromote(State promote) {
 		this.promote = promote;
 	}
+
+	@Override
+	public String toString() {
+		return "AppState [name=" + name + ", build=" + build + ", promote=" + promote + "]";
+	}
 	
 }

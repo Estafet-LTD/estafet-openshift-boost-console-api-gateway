@@ -77,7 +77,7 @@ public class FeatureEnv {
 				.setBuildAction(name.equals("build"))
 				.setGoLiveAction(goLiveAction)
 				.setTestAction(testAction())
-				.setPromoteAction(promoteAction(envState))
+				.setPromoteAction(promoteAction())
 				.setEnvState(envState)
 				.setDisplayName(displayName)
 				.setIndicatorColour(indicatorColour())
@@ -111,15 +111,13 @@ public class FeatureEnv {
 		}
 	}
 	
-	private boolean promoteAction(EnvState envState) {
-		if (envState.getName().equals("build")) {
+	private boolean promoteAction() {
+		if (name.equals("build")) {
 			return true;
-		} else if (envState.getName().equals("test")) {
-			return envState.getTest() == State.COMPLETE;
-		} else if (envState.getName().equals("green") || envState.getName().equals("blue")) {
+		} else if (name.equals("green") || name.equals("blue")) {
 			return false;
 		} else {
-			throw new RuntimeException("Unknown environment - " + envState.getName());
+			return tested;
 		}
 	}
 	

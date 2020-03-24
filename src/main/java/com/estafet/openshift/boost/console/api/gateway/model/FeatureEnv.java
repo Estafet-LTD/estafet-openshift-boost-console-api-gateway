@@ -104,14 +104,10 @@ public class FeatureEnv {
 	private boolean testAction() {
 		if (name.equals("build")) {
 			return false;
-		} else if (name.equals("test")) {
-			return true;
-		} else if ((name.equals("green") || name.equals("blue")) && !live) {
-			return true;
-		}  else if (name.equals("green") || name.equals("blue")) {
-			return false;
+		} else if (name.equals("green") || name.equals("blue")) {
+			return !live;
 		} else {
-			throw new RuntimeException("Unknown environment - " + name);
+			return true;
 		}
 	}
 	

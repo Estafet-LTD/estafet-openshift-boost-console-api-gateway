@@ -24,7 +24,9 @@ public class BaseService {
 	}
 
 	protected boolean promoteAction(Environment environment) {
-		if (environment.getName().equals("build") || environment.getName().equals("green") || environment.getName().equals("blue")) {
+		if (environment.getName().equals("build")) {
+			return true;
+		} else if  (environment.getName().equals("green") || environment.getName().equals("blue")) {
 			return false;
 		} else {
 			return environment.getTested();

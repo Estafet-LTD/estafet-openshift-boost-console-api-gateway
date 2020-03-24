@@ -2,12 +2,17 @@ package com.estafet.openshift.boost.console.api.gateway.service;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
 import com.estafet.openshift.boost.console.api.gateway.model.EnvState;
 import com.estafet.openshift.boost.messages.environments.Environment;
 
 public class BaseService {
 
+	private static final Logger log = LoggerFactory.getLogger(BaseService.class);
+	
 	protected boolean testAction(Environment environment) {
 		if (environment.getName().equals("build")) {
 			return false;
@@ -55,6 +60,8 @@ public class BaseService {
 	}
 
 	protected EnvironmentDTO convertToDTO(Map<String, EnvState> states, Environment environment) {
+		log.info(environment.toString());
+		log.info(states.toString());
 		return EnvironmentDTO.builder()
 				.setName(environment.getName())
 				.setEnvState(states.get(environment.getName()))

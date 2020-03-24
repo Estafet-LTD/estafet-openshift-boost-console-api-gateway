@@ -88,4 +88,10 @@ public class EnvState {
 		throw new RuntimeException("Cannot find state for app - " + name);
 	}
 
+	@Override
+	public String toString() {
+		return "EnvState [name=" + name + ", build=" + build + ", promote=" + promote + ", test=" + test + ", goLive="
+				+ goLive + ", backOut=" + backOut + ", apps=" + apps + "]";
+	}
+	
 }

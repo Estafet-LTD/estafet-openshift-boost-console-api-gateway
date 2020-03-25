@@ -2,7 +2,7 @@ package com.estafet.openshift.boost.console.api.gateway.model;
 
 public enum State {
 
-	NEW("New"), FAILED("Failed"), COMPLETE("Complete"), RUNNING("Running"), PENDING("Pending");
+	NEW("New"), FAILED("Failed"), COMPLETE("Complete"), RUNNING("Running"), PENDING("Pending"), CANCELLED("Cancelled");
 
 	private String value;
 

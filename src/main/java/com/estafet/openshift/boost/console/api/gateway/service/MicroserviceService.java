@@ -45,7 +45,7 @@ public class MicroserviceService extends BaseService {
 
 	private Boolean msTested(Environment env, EnvironmentApp app, AppState appState) {
 		if (env.getName().equals("build")) {
-			return appState.getBuild() != State.FAILED;
+			return appState.getBuild() != State.FAILED || appState.getBuild() != State.CANCELLED;
 		} else {
 			return null;	
 		}
@@ -53,7 +53,7 @@ public class MicroserviceService extends BaseService {
 
 	private boolean msPromoteAction(Environment env, EnvironmentApp app, AppState appState) {
 		if (env.getName().equals("build")) {
-			return appState.getBuild() != State.FAILED;
+			return appState.getBuild() != State.FAILED || appState.getBuild() != State.CANCELLED;
 		} else if (env.getName().equals("green") || env.getName().equals("blue")) {
 			return false;
 		} else {

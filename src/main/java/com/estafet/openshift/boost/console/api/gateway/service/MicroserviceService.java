@@ -45,7 +45,7 @@ public class MicroserviceService extends BaseService {
 
 	private Boolean msTested(Environment env, EnvironmentApp app, AppState appState) {
 		if (env.getName().equals("build")) {
-			return appState.getBuild() != State.FAILED || appState.getBuild() != State.CANCELLED;
+			return appState.getBuild() == State.FAILED || appState.getBuild() == State.CANCELLED;
 		} else {
 			return null;	
 		}

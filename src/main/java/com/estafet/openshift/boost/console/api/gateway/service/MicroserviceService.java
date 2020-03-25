@@ -51,8 +51,12 @@ public class MicroserviceService extends BaseService {
 		}
 	}
 
-	public boolean testStatus(AppState appState) {
-		return appState.getBuild() != State.FAILED && appState.getBuild() != State.CANCELLED;
+	public Boolean testStatus(AppState appState) {
+		if (appState.getBuild() == State.RUNNING || appState.getBuild() == State.NEW || appState.getBuild() == State.PENDING) {
+			return null;
+		} else {
+			return appState.getBuild() != State.FAILED && appState.getBuild() != State.CANCELLED;	
+		}
 	}
 
 	private boolean msPromoteAction(Environment env, EnvironmentApp app, AppState appState) {

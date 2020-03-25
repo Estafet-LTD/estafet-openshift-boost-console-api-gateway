@@ -73,6 +73,7 @@ public class BaseService {
 				.setGoLiveAction(goLiveAction(environment))
 				.setBuildAction(buildAction(environment))
 				.setPromoteAction(promoteAction(environment))
+				.setTested(environment.getTested())
 				.setTestAction(testAction(environment))
 				.setUpdatedDate(environment.getUpdatedDate())
 				.build();

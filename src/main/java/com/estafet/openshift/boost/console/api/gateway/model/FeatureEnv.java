@@ -8,6 +8,7 @@ import com.estafet.openshift.boost.console.api.gateway.dto.EnvironmentDTO;
 public class FeatureEnv {
 
 	private String name;
+	private String displayName;
 	private String updatedDate;
 	private Boolean live;
 	private Boolean tested;
@@ -18,6 +19,14 @@ public class FeatureEnv {
 		features.add(feature);
 	}
 	
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -60,22 +69,10 @@ public class FeatureEnv {
 
 	public EnvironmentDTO getEnvironmentDTO(EnvState envState) {
 		
-		String displayName;
-		boolean backOutAction = false;
-		boolean goLiveAction = false;
-		
-		if (name.equals("blue") || name.equals("green")) {
-			displayName = live ? "Live" : "Staging";
-			backOutAction = live;
-			goLiveAction = !live;
-		} else {
-			displayName = name.substring(0, 1).toUpperCase() + name.substring(1);
-		}
-		
 		EnvironmentDTO dto = EnvironmentDTO.builder()
-				.setBackOutAction(backOutAction)
-				.setBuildAction(name.equals("build"))
-				.setGoLiveAction(goLiveAction)
+				.setBackOutAction(backOutAction())
+				.setBuildAction(buildAction())
+				.setGoLiveAction(goLiveAction())
 				.setTestAction(testAction())
 				.setPromoteAction(promoteAction())
 				.setEnvState(envState)
@@ -92,6 +89,18 @@ public class FeatureEnv {
 		
 		return dto;
 	}
+
+	public boolean buildAction() {
+		return name.equals("build");
+	}
+	
+	private boolean backOutAction() {
+		return name.equals("blue") || name.equals("green") ? live : false;
+	}
+	
+	private boolean goLiveAction() {
+		return name.equals("blue") || name.equals("green") ? !live : false;
+	}
 	
 	private String indicatorColour() {
 		if (name.equals("green") || name.equals("blue")) {
@@ -102,7 +111,7 @@ public class FeatureEnv {
 	}
 		
 	private boolean testAction() {
-		if (name.equals("build")) {
+		if (buildAction()) {
 			return false;
 		} else if (name.equals("green") || name.equals("blue")) {
 			return !live;
@@ -112,7 +121,7 @@ public class FeatureEnv {
 	}
 	
 	private boolean promoteAction() {
-		if (name.equals("build")) {
+		if (buildAction()) {
 			return true;
 		} else if (name.equals("green") || name.equals("blue")) {
 			return false;

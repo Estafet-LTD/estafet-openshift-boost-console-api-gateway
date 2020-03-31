@@ -37,7 +37,7 @@ public class ProjectService {
 	}
 			
 	public String createProject(Project project) {
-		String response = restTemplate.postForObject(ENV.PROJECT_SERVICE_API + "/project", Project.class, String.class);
+		String response = restTemplate.postForObject(ENV.PROJECT_SERVICE_API + "/project", project, String.class);
 		return response;
 	}
 	

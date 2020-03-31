@@ -28,6 +28,10 @@ public class ProjectController {
 		return projectService.getProjects();
 	}
 	
+	@GetMapping("/project/{namespace}")
+	public ProjectDTO getProject(@PathVariable String namespace) {
+		return projectService.getProject(namespace);
+	}
 
 	@PostMapping("/project")
 	public ResponseEntity<String> createProject(@RequestBody Project project) {

@@ -1,6 +1,5 @@
 package com.estafet.openshift.boost.console.api.gateway.dto;
 
-import com.estafet.openshift.boost.console.api.gateway.dto.FeatureDTO.FeatureDTOBuilder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 

@@ -35,6 +35,15 @@ public class ProjectService {
 		}
 		return projectsDTO;
 	}
+	
+	public ProjectDTO getProject(String namespace) {
+		ProjectDTO projectDTO = new ProjectDTO();
+		Project project = restTemplate.getForObject(ENV.PROJECT_SERVICE_API + "/project/" + namespace, Project.class);
+			projectDTO.setTitle(project.getTitle());
+			projectDTO.setOwner(project.getOwner());
+			projectDTO.setNamespace(project.getNamespace());
+		return projectDTO;
+	}
 			
 	public String createProject(Project project) {
 		String response = restTemplate.postForObject(ENV.PROJECT_SERVICE_API + "/project", project, String.class);

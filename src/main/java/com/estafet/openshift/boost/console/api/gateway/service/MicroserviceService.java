@@ -42,6 +42,14 @@ public class MicroserviceService extends BaseService {
 		}
 		return response;
 	}
+	
+	public MicroserviceDTO getMicroservice(String env, String appId) {
+		Map<String, EnvState> states = stateService.getStates();
+		Environment environment = restTemplate.getForObject(ENV.ENVIRONMENT_SERVICE_API + "/environment/" + env + "/app/" + appId, Environment.class);
+		EnvironmentApp app = environment.getApps().get(0);
+		AppState appState = states.get(environment.getName()).appState(app.getName());
+		return convertToDTO(environment, appState, app);
+	}
 
 	private Boolean msTested(Environment env, EnvironmentApp app, AppState appState) {
 		if (env.getName().equals("build")) {

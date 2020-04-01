@@ -24,6 +24,11 @@ public class MicroserviceController {
 	public List<EnvironmentDTO> getMicroserviceEnvironments() {
 		return microserviceService.getMicroserviceEnvironments();
 	}
+	
+	@GetMapping("/environment/{env}/app/{app}")
+	public MicroserviceDTO getMicroservice(@PathVariable String env, @PathVariable String app) {
+		return microserviceService.getMicroservice(env, app);
+	}
 
 	@PostMapping("/environment/{env}/app/{app}/{action}")
 	public ResponseEntity<MicroserviceDTO> doAction(@PathVariable String env, @PathVariable String app,

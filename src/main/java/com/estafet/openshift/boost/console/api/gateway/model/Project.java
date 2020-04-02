@@ -9,6 +9,8 @@ public class Project {
 	private String owner;
 	
 	private String namespace;
+	
+	private String status;
 
 	public String getTitle() {
 		return title;
@@ -33,11 +35,21 @@ public class Project {
 	public void setNamespace(String namespace) {
 		this.namespace = namespace;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}	
 
 	public ProjectDTO getProjectDTO() {
 		return ProjectDTO.builder()
 				.setTitle(title)
 				.setOwner(owner)
+				.setNamespace(namespace)
+				.setStatus(status)
 				.build();
 	}
 	

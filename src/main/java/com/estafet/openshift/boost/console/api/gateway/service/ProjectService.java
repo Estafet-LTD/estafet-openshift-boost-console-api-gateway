@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.estafet.openshift.boost.console.api.gateway.dto.ProjectDTO;
 import com.estafet.openshift.boost.console.api.gateway.model.Project;
 import com.estafet.openshift.boost.console.api.gateway.util.ENV;
-import com.estafet.openshift.boost.messages.users.User;
 
 @Service
 public class ProjectService {
@@ -27,22 +25,14 @@ public class ProjectService {
 		List<ProjectDTO> projectsDTO = new ArrayList<ProjectDTO>();
 		Project[] projects = restTemplate.getForObject(ENV.PROJECT_SERVICE_API + "/projects", Project[].class);
 		for (Project project : projects) {
-			ProjectDTO projectDTO = new ProjectDTO();
-			projectDTO.setTitle(project.getTitle());
-			projectDTO.setOwner(project.getOwner());
-			projectDTO.setNamespace(project.getNamespace());
-			projectsDTO.add(projectDTO);
+			projectsDTO.add(convertToDTO(project));
 		}
 		return projectsDTO;
 	}
 	
 	public ProjectDTO getProject(String namespace) {
-		ProjectDTO projectDTO = new ProjectDTO();
 		Project project = restTemplate.getForObject(ENV.PROJECT_SERVICE_API + "/project/" + namespace, Project.class);
-			projectDTO.setTitle(project.getTitle());
-			projectDTO.setOwner(project.getOwner());
-			projectDTO.setNamespace(project.getNamespace());
-		return projectDTO;
+		return convertToDTO(project);
 	}
 			
 	public String createProject(Project project) {
@@ -62,4 +52,14 @@ public class ProjectService {
 		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{namespace}" ,  HttpMethod.PUT, entity, String.class, namespace )).getBody();
 		return response;
 	}
+	
+	private ProjectDTO convertToDTO(Project project) {
+		return ProjectDTO.builder()
+				.setNamespace(project.getNamespace())
+				.setOwner(project.getOwner())
+				.setStatus(project.getStatus())
+				.setTitle(project.getTitle())
+				.build();
+	}
+	
 }

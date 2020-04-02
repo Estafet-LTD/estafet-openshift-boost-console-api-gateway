@@ -11,7 +11,10 @@ public class ProjectDTO {
 	private String owner;
 	
 	private String namespace;
+	
+	private String status;
 
+	
 	public String getTitle() {
 		return title;
 	}
@@ -36,6 +39,16 @@ public class ProjectDTO {
 		this.namespace = namespace;
 	}
 	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
+	
 	public static ProjectDTOBuilder builder() {
 		return new ProjectDTOBuilder();
 	}
@@ -45,6 +58,7 @@ public class ProjectDTO {
 		private String title;
 		private String owner;
 		private String namespace;
+		private String status;
 
 
 		public ProjectDTOBuilder setTitle(String title) {
@@ -62,11 +76,17 @@ public class ProjectDTO {
 			return this;
 		}
 		
+		public ProjectDTOBuilder setStatus(String status) {
+			this.status = status;
+			return this;
+		}
+		
 		public ProjectDTO build() {
 			ProjectDTO dto = new ProjectDTO();
 			dto.setTitle(title);
 			dto.setOwner(owner);
 			dto.setNamespace(namespace);
+			dto.setStatus(status);
 
 			return dto;
 		}

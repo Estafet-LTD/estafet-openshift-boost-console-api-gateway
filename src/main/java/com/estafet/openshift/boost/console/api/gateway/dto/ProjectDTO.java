@@ -47,12 +47,9 @@ public class ProjectDTO {
 		this.status = status;
 	}
 	
-	
-	
 	public static ProjectDTOBuilder builder() {
 		return new ProjectDTOBuilder();
 	}
-
 
 	public static class ProjectDTOBuilder {
 		private String title;

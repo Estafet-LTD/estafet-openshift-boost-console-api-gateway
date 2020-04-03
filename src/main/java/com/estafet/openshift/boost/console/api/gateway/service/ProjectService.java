@@ -41,25 +41,24 @@ public class ProjectService {
 	}
 	
 	public String deleteProject(String project) {
-		
-		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{project}" ,  HttpMethod.DELETE, null, String.class, project )).getBody();
+		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{project}" , HttpMethod.DELETE, null, String.class, project)).getBody();
 		return response;
 	}
 	
 	public String editProject(Project project, String namespace) {
 	    HttpHeaders headers = new HttpHeaders();
 	    HttpEntity<Project> entity = new HttpEntity<Project>(project, headers);
-		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{namespace}" ,  HttpMethod.PUT, entity, String.class, namespace )).getBody();
+		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{namespace}", HttpMethod.PUT, entity, String.class, namespace)).getBody();
 		return response;
 	}
 	
 	private ProjectDTO convertToDTO(Project project) {
 		return ProjectDTO.builder()
-				.setNamespace(project.getNamespace())
-				.setOwner(project.getOwner())
-				.setStatus(project.getStatus())
-				.setTitle(project.getTitle())
-				.build();
+			.setNamespace(project.getNamespace())
+			.setOwner(project.getOwner())
+			.setStatus(project.getStatus())
+			.setTitle(project.getTitle())
+			.build();
 	}
 	
 }

@@ -41,16 +41,16 @@ public class Project {
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this.status = status.toLowerCase();
 	}	
 
 	public ProjectDTO getProjectDTO() {
 		return ProjectDTO.builder()
-				.setTitle(title)
-				.setOwner(owner)
-				.setNamespace(namespace)
-				.setStatus(status)
-				.build();
+			.setTitle(title)
+			.setOwner(owner)
+			.setNamespace(namespace)
+			.setStatus(status)
+			.build();
 	}
 	
 }

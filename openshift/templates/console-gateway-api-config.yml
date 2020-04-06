@@ -80,6 +80,8 @@ objects:
                 value: 'http://console-user-api.${NAMESPACE}.svc:8080'
               - name: PROJECT_API_SERVICE_URI
                 value: 'http://console-project-api.${NAMESPACE}.svc:8080'
+              - name: TRELLO_API_SERVICE_URI
+                value: 'http://console-project-api.${NAMESPACE}.svc:8080'
               - name: PRODUCT
                 value: ${PRODUCT}
               - name: PRODUCT_DESCRIPTION

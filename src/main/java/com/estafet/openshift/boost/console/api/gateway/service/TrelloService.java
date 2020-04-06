@@ -3,6 +3,7 @@ package com.estafet.openshift.boost.console.api.gateway.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +21,10 @@ public class TrelloService {
 
 	public TrelloCardDTO getTrelloCardDetails(TrelloUrl url) {
 		
-		TrelloCard trelloCard = restTemplate.getForObject(ENV.TRELLO_SERVICE_API + "/card", TrelloCard.class, url);
+		//TrelloCard trelloCard = restTemplate.getForObject(ENV.TRELLO_SERVICE_API + "/card", TrelloCard.class, url);
+		System.out.println("URL: " + url);
+		TrelloCard trelloCard = (restTemplate.exchange(ENV.TRELLO_SERVICE_API + "/card" , HttpMethod.GET, null, TrelloCard.class, url)).getBody();
+
 
 		return convertToDTO(trelloCard);
 	}

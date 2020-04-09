@@ -99,7 +99,7 @@ public class FeatureEnv {
 	}
 	
 	private boolean goLiveAction() {
-		return name.equals("blue") || name.equals("green") ? !live : false;
+		return name.equals("blue") || name.equals("green") ? !live && tested.booleanValue() : false;
 	}
 	
 	private String indicatorColour() {

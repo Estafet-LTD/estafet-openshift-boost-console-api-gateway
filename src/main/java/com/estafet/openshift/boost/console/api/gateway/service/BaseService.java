@@ -39,7 +39,7 @@ public class BaseService {
 
 	protected boolean goLiveAction(Environment environment) {
 		if (environment.getName().equals("green") || environment.getName().equals("blue")) {
-			return !environment.getLive(); 
+			return !environment.getLive() && environment.getTested(); 
 		} else {
 			return false;
 		}

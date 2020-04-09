@@ -39,7 +39,7 @@ public class BaseService {
 
 	protected boolean goLiveAction(Environment environment) {
 		if (environment.getName().equals("green") || environment.getName().equals("blue")) {
-			return environment.getLive() ? true : false; 
+			return environment.getLive() ? false : true; 
 		} else {
 			return false;
 		}
@@ -47,7 +47,7 @@ public class BaseService {
 
 	protected boolean backOutAction(Environment environment) {
 		if (environment.getName().equals("green") || environment.getName().equals("blue")) {
-			return environment.getLive() ? false : true; 
+			return environment.getLive() ? true : false; 
 		} else {
 			return false;
 		}

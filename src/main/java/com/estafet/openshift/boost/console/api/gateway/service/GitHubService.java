@@ -15,7 +15,7 @@ public class GitHubService {
 
 	public String webhook(GitHubHook hook) {
 		return restTemplate.postForObject(ENV.ENVIRONMENT_SERVICE_API + 
-				"/hooks", hook, String.class);
+				"/github/hooks", hook, String.class);
 	}
 
 }

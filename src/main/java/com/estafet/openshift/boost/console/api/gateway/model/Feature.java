@@ -5,18 +5,21 @@ import com.estafet.openshift.boost.console.api.gateway.dto.FeatureDTO;
 public class Feature {
 
 	private String featureId;
-
 	private String title;
-
 	private String description;
-
 	private String status;
-
 	private boolean promoted;
-
 	private String waitingSince;
-	
 	private String url;
+	private String promoteStatus;
+
+	public String getPromoteStatus() {
+		return promoteStatus;
+	}
+
+	public void setPromoteStatus(String promoteStatus) {
+		this.promoteStatus = promoteStatus;
+	}
 
 	public String getUrl() {
 		return url;
@@ -83,6 +86,7 @@ public class Feature {
 				.setTitle(title)
 				.setWaitingSince(waitingSince)
 				.setUrl(url)
+				.setPromoteStatus(promoteStatus)
 				.build();
 	}
 

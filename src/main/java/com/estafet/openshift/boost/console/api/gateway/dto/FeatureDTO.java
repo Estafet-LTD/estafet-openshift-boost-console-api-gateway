@@ -13,7 +13,16 @@ public class FeatureDTO {
 	private boolean promoted;
 	private String waitingSince;
 	private String url;
+	private String promoteStatus;
 
+	public String getPromoteStatus() {
+		return promoteStatus;
+	}
+
+	public void setPromoteStatus(String promoteStatus) {
+		this.promoteStatus = promoteStatus;
+	}
+	
 	public String getUrl() {
 		return url;
 	}
@@ -83,7 +92,13 @@ public class FeatureDTO {
 		private boolean promoted;
 		private String waitingSince;
 		private String url;
-
+		private String promoteStatus;
+		
+		public FeatureDTOBuilder setPromoteStatus(String promoteStatus) {
+			this.promoteStatus = promoteStatus;
+			return this;
+		}
+		
 		public FeatureDTOBuilder setUrl(String url) {
 			this.url = url;
 			return this;
@@ -128,6 +143,7 @@ public class FeatureDTO {
 			dto.setTitle(title);
 			dto.setWaitingSince(waitingSince);
 			dto.setUrl(url);
+			dto.setPromoteStatus(promoteStatus);
 			return dto;
 		}
 		

@@ -71,7 +71,7 @@ public class FeatureEnv {
 		
 		EnvironmentDTO dto = EnvironmentDTO.builder()
 				.setBackOutAction(backOutAction())
-				.setBuildAction(buildAction())
+				.setBuildAction(false)
 				.setGoLiveAction(goLiveAction())
 				.setTestAction(testAction())
 				.setPromoteAction(promoteAction())
@@ -122,7 +122,7 @@ public class FeatureEnv {
 	
 	private boolean promoteAction() {
 		if (buildAction()) {
-			return true;
+			return false;
 		} else if (name.equals("green") || name.equals("blue")) {
 			return false;
 		} else {

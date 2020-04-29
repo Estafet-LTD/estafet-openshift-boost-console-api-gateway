@@ -126,8 +126,17 @@ public class FeatureEnv {
 		} else if (name.equals("green") || name.equals("blue")) {
 			return false;
 		} else {
-			return tested == null ? false : tested;
+			return tested == null ? false : tested && allFeaturesDone();
 		}
+	}
+
+	private boolean allFeaturesDone() {
+		for (Feature feature : features) {
+			if (!feature.getStatus().equals("Done")) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 }

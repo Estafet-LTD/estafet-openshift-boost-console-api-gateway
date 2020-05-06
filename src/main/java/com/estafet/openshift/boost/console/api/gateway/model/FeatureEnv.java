@@ -74,7 +74,7 @@ public class FeatureEnv {
 				.setBuildAction(buildAction())
 				.setGoLiveAction(goLiveAction())
 				.setTestAction(testAction())
-				.setPromoteAction(promoteAction())
+				.setPromoteAction(promoteAction(features))
 				.setEnvState(envState)
 				.setDisplayName(displayName)
 				.setIndicatorColour(indicatorColour())
@@ -120,18 +120,18 @@ public class FeatureEnv {
 		}
 	}
 	
-	private boolean promoteAction() {
+	private boolean promoteAction(List<Feature> features2) {
 		if (buildAction()) {
 			return false;
 		} else if (name.equals("green") || name.equals("blue")) {
 			return false;
 		} else {
-			return tested == null ? false : tested && allFeaturesDone();
+			return tested == null ? false : tested && allFeaturesDone(features2);
 		}
 	}
 
-	private boolean allFeaturesDone() {
-		for (Feature feature : features) {
+	private boolean allFeaturesDone(List<Feature> features2) {
+		for (Feature feature : features2) {
 			if (!feature.getStatus().equals("Done")) {
 				return false;
 			}

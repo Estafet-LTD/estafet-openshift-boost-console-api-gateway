@@ -71,7 +71,7 @@ public class FeatureEnv {
 		
 		EnvironmentDTO dto = EnvironmentDTO.builder()
 				.setBackOutAction(backOutAction())
-				.setBuildAction(buildAction())
+				.setBuildAction(false)
 				.setGoLiveAction(goLiveAction())
 				.setTestAction(testAction())
 				.setPromoteAction(promoteAction(features))

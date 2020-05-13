@@ -2,7 +2,7 @@ config_map:
   - name: PRODUCT
     value: "{{ product.name }}"    
   - name: JAEGER_SERVICE_NAME
-    value: "{{ project }}-console-environment-api"
+    value: "{{ project }}-{{ microservice.name }}"
   - name: JAEGER_SAMPLER_TYPE
     value: const
   - name: JAEGER_SAMPLER_PARAM

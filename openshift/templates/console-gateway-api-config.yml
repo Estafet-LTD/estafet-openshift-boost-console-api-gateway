@@ -13,11 +13,18 @@ parameters:
   required: true
 - description: Defines max memory
   name: MAX_MEMORY
-  value: 400Mi
   required: true  
 - description: Defines min memory
   name: MIN_MEMORY
-  value: 100Mi
+  required: true
+- description: Defines max cpu
+  name: MAX_CPU
+  required: true  
+- description: Defines min memory
+  name: MIN_CPU
+  required: true
+- description: Defines number of replicas
+  name: REPLICAS
   required: true
 - description: Defines the namespace for the image stream
   name: DOCKER_NAMESPACE
@@ -31,10 +38,7 @@ parameters:
   required: true    
 - description: Defines the product that this template is related to
   name: PRODUCT
-  required: true     
-- description: Defines the product description that this template is related to
-  name: PRODUCT_DESCRIPTION
-  required: true     
+  required: true      
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
@@ -42,11 +46,10 @@ objects:
     creationTimestamp: null
     labels:
       app: ${MICROSERVICE}
-      product: ${PRODUCT}
     name: ${MICROSERVICE}
     namespace: ${NAMESPACE}
   spec:
-    replicas: 1
+    replicas: ${REPLICAS}
     revisionHistoryLimit: 10
     selector:
       app: ${MICROSERVICE}
@@ -70,30 +73,68 @@ objects:
       spec:
         containers:
           - env:
-              - name: ENVIRONMENT_API_SERVICE_URI
-                value: 'http://console-environment-api.${NAMESPACE}.svc:8080'          
+              - name: ENVIRONMENT_API_SERVICE_URI          
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: ENVIRONMENT_API_SERVICE_URI
               - name: FEATURE_API_SERVICE_URI
-                value: 'http://console-feature-api.${NAMESPACE}.svc:8080'
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: FEATURE_API_SERVICE_URI
               - name: JENKINS_API_SERVICE_URI
-                value: 'http://console-jenkins-api.${NAMESPACE}.svc:8080'
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: JENKINS_API_SERVICE_URI
               - name: USER_API_SERVICE_URI
-                value: 'http://console-user-api.${NAMESPACE}.svc:8080'
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: USER_API_SERVICE_URI
               - name: PROJECT_API_SERVICE_URI
-                value: 'http://console-project-api.${NAMESPACE}.svc:8080'
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: PROJECT_API_SERVICE_URI                
               - name: TRELLO_API_SERVICE_URI
-                value: 'http://console-project-api.${NAMESPACE}.svc:8080'
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: TRELLO_API_SERVICE_URI                 
               - name: PRODUCT
-                value: ${PRODUCT}
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: PRODUCT 
               - name: PRODUCT_DESCRIPTION
                 value: ${PRODUCT_DESCRIPTION}
+              - name: JAEGER_SERVICE_NAME
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: JAEGER_SERVICE_NAME
               - name: JAEGER_SAMPLER_TYPE
-                value: const
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: JAEGER_SAMPLER_TYPE
               - name: JAEGER_SAMPLER_PARAM
-                value: '1'                
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: JAEGER_SAMPLER_PARAM
               - name: JAEGER_SAMPLER_MANAGER_HOST_PORT
-                value: jaeger-agent.${NAMESPACE}.svc:5778
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: JAEGER_SAMPLER_MANAGER_HOST_PORT
               - name: JAEGER_AGENT_HOST
-                value: jaeger-agent.${NAMESPACE}.svc                             
+                valueFrom:
+                  configMapKeyRef:
+                    name: ${MICROSERVICE} 
+                    key: JAEGER_AGENT_HOST                             
             image: ${DOCKER_REGISTRY}/${DOCKER_NAMESPACE}/${MICROSERVICE}:${DOCKER_IMAGE_LABEL}
             imagePullPolicy: Always
             name: ${MICROSERVICE}
@@ -116,10 +157,10 @@ objects:
                 scheme: HTTP
             resources:
               limits:
-                cpu: '1'
+                cpu: ${MAX_CPU}
                 memory: ${MAX_MEMORY}
               requests:
-                cpu: 50m
+                cpu: ${MIN_CPU}
                 memory: ${MIN_MEMORY}
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
@@ -145,7 +186,6 @@ objects:
     creationTimestamp: null
     labels:
       app: ${MICROSERVICE}
-      product: ${PRODUCT}
     name: ${MICROSERVICE}
     namespace: ${NAMESPACE}
   spec:

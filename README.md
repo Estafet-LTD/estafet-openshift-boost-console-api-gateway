@@ -1,1 +1,1 @@
-# estafet-openshift-boost-console-api-gateway
+# gateway-api

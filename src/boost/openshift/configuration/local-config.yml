@@ -12,16 +12,16 @@ config_map:
   - name: JAEGER_AGENT_HOST
     value: "jaeger-agent.{{ project }}.svc"  
   - name: ENVIRONMENT_API_SERVICE_URI
-    value: "http://console-environment-api.{{ project }}.svc:8080"          
+    value: "http://environment-api.{{ project }}.svc:8080"          
   - name: FEATURE_API_SERVICE_URI
-    value: "http://console-feature-api.{{ project }}.svc:8080"
+    value: "http://feature-api.{{ project }}.svc:8080"
   - name: JENKINS_API_SERVICE_URI
-    value: "http://console-jenkins-api.{{ project }}.svc:8080"
+    value: "http://jenkins-api.{{ project }}.svc:8080"
   - name: USER_API_SERVICE_URI
-    value: "http://console-user-api.{{ project }}.svc:8080"
+    value: "http://user-api.{{ project }}.svc:8080"
   - name: PROJECT_API_SERVICE_URI
-    value: "http://console-project-api.{{ project }}.svc:8080"
+    value: "http://project-api.{{ project }}.svc:8080"
   - name: TRELLO_API_SERVICE_URI
-    value: "http://console-project-api.{{ project }}.svc:8080"    
+    value: "http://project-api.{{ project }}.svc:8080"    
     
       

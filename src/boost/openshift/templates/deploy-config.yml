@@ -33,10 +33,7 @@ parameters:
   required: true      
 - description: Defines docker registry
   name: DOCKER_IMAGE_LABEL
-  required: true    
-- description: Defines the product that this template is related to
-  name: PRODUCT
-  required: true      
+  required: true        
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
@@ -93,13 +90,6 @@ objects:
                   configMapKeyRef:
                     name: ${MICROSERVICE} 
                     key: TRELLO_API_SERVICE_URI                 
-              - name: PRODUCT
-                valueFrom:
-                  configMapKeyRef:
-                    name: ${MICROSERVICE} 
-                    key: PRODUCT 
-              - name: PRODUCT_DESCRIPTION
-                value: ${PRODUCT_DESCRIPTION}
               - name: JAEGER_SERVICE_NAME
                 valueFrom:
                   configMapKeyRef:

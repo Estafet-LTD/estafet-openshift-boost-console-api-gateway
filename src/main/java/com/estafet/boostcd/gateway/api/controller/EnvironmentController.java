@@ -16,10 +16,10 @@ public class EnvironmentController {
 	@Autowired
 	private EnvironmentService environmentService;
 
-	@PostMapping("/environment/{env}/{action}")
-	public ResponseEntity<EnvironmentDTO> doAction(@PathVariable String env,
+	@PostMapping("/environment/{product}/{env}/{action}")
+	public ResponseEntity<EnvironmentDTO> doAction(@PathVariable String product, @PathVariable String env,
 			@PathVariable String action) {
-		return new ResponseEntity<EnvironmentDTO>(environmentService.doAction(env, action),
+		return new ResponseEntity<EnvironmentDTO>(environmentService.doAction(product, env, action),
 				HttpStatus.OK);
 	}
 

@@ -29,10 +29,10 @@ public class MicroserviceService extends BaseService {
 	@Autowired
 	private StateService stateService;
 
-	public List<EnvironmentDTO> getMicroserviceEnvironments() {
-		Map<String, EnvState> states = stateService.getStates();
+	public List<EnvironmentDTO> getMicroserviceEnvironments(String product) {
+		Map<String, EnvState> states = stateService.getStates(product);
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
-		for (Environment environment : getEnvs()) {
+		for (Environment environment : getEnvs(product)) {
 			EnvironmentDTO env = convertToDTO(states, environment);
 			for (EnvironmentApp app : environment.getApps()) {
 				AppState appState = states.get(environment.getName()).appState(app.getName());
@@ -43,9 +43,9 @@ public class MicroserviceService extends BaseService {
 		return response;
 	}
 	
-	public MicroserviceDTO getMicroservice(String env, String appId) {
-		Map<String, EnvState> states = stateService.getStates();
-		Environment environment = restTemplate.getForObject(ENV.ENVIRONMENT_SERVICE_API + "/environment/" + env + "/app/" + appId, Environment.class);
+	public MicroserviceDTO getMicroservice(String product, String env, String appId) {
+		Map<String, EnvState> states = stateService.getStates(product);
+		Environment environment = restTemplate.getForObject(ENV.ENVIRONMENT_SERVICE_API + "/environment/" + product + "/" + env + "/app/" + appId, Environment.class);
 		EnvironmentApp app = environment.getApps().get(0);
 		AppState appState = states.get(environment.getName()).appState(app.getName());
 		return convertToDTO(environment, appState, app);
@@ -77,15 +77,15 @@ public class MicroserviceService extends BaseService {
 		return env.getName().equals("build");
 	}
 	
-	private Environment[] getEnvs() {
-		return restTemplate.getForObject(ENV.ENVIRONMENT_SERVICE_API + "/microservices", Environment[].class);
+	private Environment[] getEnvs(String product) {
+		return restTemplate.getForObject(ENV.ENVIRONMENT_SERVICE_API + "/microservices/" + product, Environment[].class);
 	}
 
-	public MicroserviceDTO doAction(String env, String app, String action) {
+	public MicroserviceDTO doAction(String product, String env, String app, String action) {
 		Environment environment = restTemplate.postForObject(ENV.ENVIRONMENT_SERVICE_API + 
-				"/environment/"	+ env + "/app/" + app +"/" + action, 
+				"/environment/" + product  + "/" + env + "/app/" + app +"/" + action, 
 				null, Environment.class);
-		AppState appState = stateService.getState(env).appState(app);
+		AppState appState = stateService.getState(product, env).appState(app);
 		EnvironmentApp environmentApp = environment.getEnvironmentApp(app);
 		return convertToDTO(environment, appState, environmentApp);
 	}

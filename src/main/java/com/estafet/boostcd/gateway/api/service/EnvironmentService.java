@@ -20,10 +20,10 @@ public class EnvironmentService extends BaseService {
 	@Autowired
 	private StateService stateService;
 
-	public EnvironmentDTO doAction(String env, String action) {
+	public EnvironmentDTO doAction(String productId, String env, String action) {
 		Environment environment = restTemplate.postForObject(ENV.ENVIRONMENT_SERVICE_API + 
-				"/environment/"	+ env + "/" + action, null, Environment.class);
-		Map<String, EnvState> states = stateService.getStates();
+				"/environment/" + productId + "/" + env + "/" + action, null, Environment.class);
+		Map<String, EnvState> states = stateService.getStates(productId);
 		return convertToDTO(states, environment);
 	}
 

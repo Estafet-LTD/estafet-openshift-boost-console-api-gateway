@@ -20,35 +20,34 @@ public class ProjectService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-
-	public List<ProjectDTO> getProjects() {
+	public List<ProjectDTO> getProjects(String product) {
 		List<ProjectDTO> projectsDTO = new ArrayList<ProjectDTO>();
-		Project[] projects = restTemplate.getForObject(ENV.PROJECT_SERVICE_API + "/projects", Project[].class);
+		Project[] projects = restTemplate.getForObject(ENV.PROJECT_SERVICE_API + "/projects/" + product, Project[].class);
 		for (Project project : projects) {
 			projectsDTO.add(convertToDTO(project));
 		}
 		return projectsDTO;
 	}
 	
-	public ProjectDTO getProject(String namespace) {
-		Project project = restTemplate.getForObject(ENV.PROJECT_SERVICE_API + "/project/" + namespace, Project.class);
+	public ProjectDTO getProject(String product, String namespace) {
+		Project project = restTemplate.getForObject(ENV.PROJECT_SERVICE_API + "/project/" + product + "/" + namespace, Project.class);
 		return convertToDTO(project);
 	}
 			
-	public String createProject(Project project) {
-		String response = restTemplate.postForObject(ENV.PROJECT_SERVICE_API + "/project", project, String.class);
+	public String createProject(String product, Project project) {
+		String response = restTemplate.postForObject(ENV.PROJECT_SERVICE_API + "/project/" + product, project, String.class);
 		return response;
 	}
 	
-	public String deleteProject(String project) {
-		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{project}" , HttpMethod.DELETE, null, String.class, project)).getBody();
+	public String deleteProject(String product, String project) {
+		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{product}/{project}" , HttpMethod.DELETE, null, String.class, product, project)).getBody();
 		return response;
 	}
 	
-	public String editProject(Project project, String namespace) {
+	public String editProject(String product, Project project, String namespace) {
 	    HttpHeaders headers = new HttpHeaders();
 	    HttpEntity<Project> entity = new HttpEntity<Project>(project, headers);
-		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{namespace}", HttpMethod.PUT, entity, String.class, namespace)).getBody();
+		String response = (restTemplate.exchange(ENV.PROJECT_SERVICE_API + "/project/{product}/{namespace}", HttpMethod.PUT, entity, String.class, product, namespace)).getBody();
 		return response;
 	}
 	

@@ -22,17 +22,17 @@ public class FeatureService {
 	@Autowired
 	private StateService stateService;
 
-	public List<EnvironmentDTO> getFeatureEnvironments() {
-		Map<String, EnvState> states = stateService.getStates();
+	public List<EnvironmentDTO> getFeatureEnvironments(String product) {
+		Map<String, EnvState> states = stateService.getStates(product);
 		List<EnvironmentDTO> response = new ArrayList<EnvironmentDTO>();
-		for (FeatureEnv featureEnv : getFeatureEnvs()) {
+		for (FeatureEnv featureEnv : getFeatureEnvs(product)) {
 			response.add(featureEnv.getEnvironmentDTO(states.get(featureEnv.getName())));
 		}
 		return response;
 	}
 
-	private FeatureEnv[] getFeatureEnvs() {
-		return restTemplate.getForObject(ENV.FEATURE_SERVICE_API + "/environments", FeatureEnv[].class);
+	private FeatureEnv[] getFeatureEnvs(String product) {
+		return restTemplate.getForObject(ENV.FEATURE_SERVICE_API + "/environments/" + product, FeatureEnv[].class);
 	}
 
 }

@@ -20,20 +20,20 @@ public class MicroserviceController {
 	@Autowired
 	private MicroserviceService microserviceService;
 
-	@GetMapping("/microservices")
-	public List<EnvironmentDTO> getMicroserviceEnvironments() {
-		return microserviceService.getMicroserviceEnvironments();
+	@GetMapping("/microservices/{product}")
+	public List<EnvironmentDTO> getMicroserviceEnvironments(@PathVariable String product) {
+		return microserviceService.getMicroserviceEnvironments(product);
 	}
 	
-	@GetMapping("/environment/{env}/app/{app}")
-	public MicroserviceDTO getMicroservice(@PathVariable String env, @PathVariable String app) {
-		return microserviceService.getMicroservice(env, app);
+	@GetMapping("/environment/{product}/{env}/app/{app}")
+	public MicroserviceDTO getMicroservice(@PathVariable String product, @PathVariable String env, @PathVariable String app) {
+		return microserviceService.getMicroservice(product, env, app);
 	}
 
-	@PostMapping("/environment/{env}/app/{app}/{action}")
-	public ResponseEntity<MicroserviceDTO> doAction(@PathVariable String env, @PathVariable String app,
+	@PostMapping("/environment/{product}/{env}/app/{app}/{action}")
+	public ResponseEntity<MicroserviceDTO> doAction(@PathVariable String product, @PathVariable String env, @PathVariable String app,
 			@PathVariable String action) {
-		return new ResponseEntity<MicroserviceDTO>(microserviceService.doAction(env, app, action),
+		return new ResponseEntity<MicroserviceDTO>(microserviceService.doAction(product, env, app, action),
 				HttpStatus.OK);
 	}
 

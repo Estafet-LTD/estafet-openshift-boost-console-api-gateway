@@ -13,12 +13,12 @@
 		<dependency>
 			<groupId>com.estafet.boostcd</groupId>
 			<artifactId>commons-lib</artifactId>
-			<version>0.0.16</version>
+			<version>0.0.17</version>
 		</dependency>	
 		<dependency>
 			<groupId>com.estafet.boostcd</groupId>
 			<artifactId>messages-lib</artifactId>
-			<version>0.0.33</version>
+			<version>0.0.34</version>
 		</dependency>
 	</dependencies>
 </project>

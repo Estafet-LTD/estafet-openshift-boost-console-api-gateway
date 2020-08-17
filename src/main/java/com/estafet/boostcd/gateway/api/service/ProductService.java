@@ -27,5 +27,9 @@ public class ProductService {
 	public Product update(Product product) {
 		return restTemplate.postForObject(ENV.ENVIRONMENT_SERVICE_API + "/product", product, Product.class);
 	}
+
+	public void delete(String product) {
+		restTemplate.delete(ENV.ENVIRONMENT_SERVICE_API + "/product/{product}", product);
+	}
 	
 }
